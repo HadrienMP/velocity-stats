@@ -1,21 +1,27 @@
 package fr.hadrienmp.stats.tickets.source
 
 import fr.hadrienmp.stats.domain.Ticket
-import fr.hadrienmp.stats.domain.TicketType
-import fr.hadrienmp.stats.tickets.source.pivotal.model.PivotalTicket
-import fr.hadrienmp.stats.tickets.source.pivotal.model.Transition
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
-import org.assertj.core.api.Assertions
+import fr.hadrienmp.stats.domain.TicketType.*
+import fr.hadrienmp.stats.domain.Tickets
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import java.time.LocalDate
-import java.time.ZonedDateTime
+import org.mockito.BDDMockito.given
+import org.mockito.Mockito.*
+import java.time.LocalDate.*
 
 class TicketsCacheSpec {
 
     @Test
     internal fun name() {
-        assertThat(listOf(Ticket(LocalDate.now(), TicketType.FEATURE),Ticket(LocalDate.now(), TicketType.BUG))).isEqualTo(listOf(Ticket(LocalDate.now(), TicketType.FEATURE),Ticket(LocalDate.now(), TicketType.BUG)));
+        val tickets = mock(Tickets::class.java)
+        val expected = listOf(Ticket(now(), FEATURE), Ticket(now(), BUG))
+        given(tickets.all()).willReturn(expected)
+
+        val actual = cachedAll(tickets)
+
+        assertThat(actual).isEqualTo(expected);
     }
+
+    private fun cachedAll(tickets: Tickets) = tickets.all()
+
 }
