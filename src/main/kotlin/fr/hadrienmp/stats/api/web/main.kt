@@ -29,6 +29,8 @@ fun webapp(port: Port, pivotalClient: PivotalClient): WebApp {
 
         val ticketsCache = TicketsCache(Pivotal(pivotalClient), Duration.ofMinutes(5))
         val analysisStartDate = ZonedDateTime.now().minusMonths(6).withDayOfMonth(1)
+
+
         it.get("/stats/tickets-finished-per-month") {
             it.json(statsOf(ticketsCache.after(analysisStartDate), Ticket::finishMonth))
         }
@@ -37,12 +39,6 @@ fun webapp(port: Port, pivotalClient: PivotalClient): WebApp {
         }
         it.get("/stats/cycle-times") {
             it.json(ticketsCache.after(analysisStartDate).timesInDaysByPoint(Ticket::cycleTime))
-        }
-        it.get("/stats/dev-times") {
-            it.json(ticketsCache.after(analysisStartDate).timesInDaysByPoint(Ticket::devTime))
-        }
-        it.get("/stats/start-to-close-times") {
-            it.json(ticketsCache.after(analysisStartDate).timesInDaysByPoint(Ticket::startToCloseTime))
         }
         it.get("/stats/points-repartition") {
             it.json(ticketsCache.after(analysisStartDate)

@@ -26,10 +26,7 @@ data class PivotalTicket(
                 createDate = createdAt.toLocalDate(),
                 type = ticketType(),
                 finishDate = acceptedAt?.toLocalDate(),
-                points = estimate,
-                prApprobationDate = lastDelivery(),
-                devFinishDate = lastFinish(),
-                devStartDate = firstStart()
+                points = estimate
         )
     }
 
@@ -39,20 +36,4 @@ data class PivotalTicket(
         else -> UNKNOWN
     }
 
-    private fun lastFinish() = last("finished")
-
-    private fun lastDelivery() = last("delivered")
-
-    private fun last(expectedState: String): LocalDate? {
-        if (acceptedAt == null) return null
-        return transitionsInReverseOrder
-                .firstOrNull { it.state == expectedState }
-                ?.let { it.date.toLocalDate() }
-    }
-
-    private fun firstStart(): LocalDate? {
-        return transitionsInReverseOrder
-                .lastOrNull {it.state == "started"}
-                ?.let { it.date.toLocalDate() }
-    }
 }

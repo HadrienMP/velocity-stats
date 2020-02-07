@@ -17,23 +17,11 @@ class TicketSpec: StringSpec({
         ticket.finishMonth() shouldBe null
     }
     "the cycle time of a ticket should be the time between the creation of the ticket and the finish date" {
-        val ticket = aTicket(createdOn = now().minusDays(1), finishedOn = now())
+        val ticket = aTicket(finishedOn = now(), createdOn = now().minusDays(1))
         ticket.cycleTime() shouldBe Period.ofDays(1)
     }
     "the cycle time of an unfinished ticket should be null" {
-        val ticket = aTicket(createdOn = now().minusDays(1), finishedOn = null)
+        val ticket = aTicket(finishedOn = null, createdOn = now().minusDays(1))
         ticket.cycleTime() shouldBe null
-    }
-    "the dev time of a ticket should be the time between the dev start date and the dev finish date" {
-        val ticket = aTicket(devStartedOn = now().minusDays(1), devFinishedOn = now())
-        ticket.devTime() shouldBe Period.ofDays(1)
-    }
-    "the dev time of a ticket should be null when the dev was not finished" {
-        val ticket = aTicket(devStartedOn = now().minusDays(1), devFinishedOn = null)
-        ticket.devTime() shouldBe null
-    }
-    "the dev time of a ticket should be null when the dev was not started" {
-        val ticket = aTicket(devStartedOn = null, devFinishedOn = now())
-        ticket.devTime() shouldBe null
     }
 })

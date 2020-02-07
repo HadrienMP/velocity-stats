@@ -40,32 +40,6 @@ $.get("/stats/cycle-times", function (stats) {
         { title: 'Cycle times / story points' });
 });
 
-$.get("/stats/dev-times", function (stats) {
-    Plotly.newPlot(
-        'devTimes',
-        [
-            boxplot(stats["0"], '0 points'),
-            boxplot(stats["1"], '1 points'),
-            boxplot(stats["2"], '2 points'),
-            boxplot(stats["3"], '3 points'),
-            boxplot(stats["5"], '5 points')
-        ],
-        { title: 'Dev times / story points' });
-});
-
-$.get("/stats/start-to-close-times", function (stats) {
-    Plotly.newPlot(
-        'startToCloseTimes',
-        [
-            boxplot(stats["0"], '0 points'),
-            boxplot(stats["1"], '1 points'),
-            boxplot(stats["2"], '2 points'),
-            boxplot(stats["3"], '3 points'),
-            boxplot(stats["5"], '5 points')
-        ],
-        { title: 'Start to finish times / story points' });
-});
-
 $.get("/stats/points-repartition", function (stats) {
     var data = [{
         values: Object.values(stats),
