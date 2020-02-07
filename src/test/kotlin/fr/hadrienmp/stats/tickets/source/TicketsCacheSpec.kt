@@ -7,6 +7,7 @@ import fr.hadrienmp.stats.domain.Ticket
 import fr.hadrienmp.stats.domain.TicketType.BUG
 import fr.hadrienmp.stats.domain.TicketType.FEATURE
 import fr.hadrienmp.stats.domain.Tickets
+import fr.hadrienmp.stats.domain.aTicket
 import io.kotlintest.specs.StringSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.mockito.Mockito.times
@@ -21,7 +22,7 @@ class TicketsCacheSpec : StringSpec({
 
     "Delegates to a tickets source" {
 
-        val expected = listOf(Ticket(now(), FEATURE), Ticket(now(), BUG))
+        val expected = listOf(aTicket())
         val tickets = mock<Tickets> {
             on { after(any()) } doReturn expected
         }
@@ -50,7 +51,7 @@ class TicketsCacheSpec : StringSpec({
 
     "call the source after expiration" {
         val tickets = mock<Tickets> {
-            on { after(any()) } doReturn listOf(Ticket(now(), FEATURE), Ticket(now(), BUG))
+            on { after(any()) } doReturn listOf(aTicket(type = FEATURE), aTicket(type = BUG))
         }
         val duration = Duration.ofMillis(100)
         val ticketsCache = TicketsCache(tickets, duration)
@@ -66,7 +67,7 @@ class TicketsCacheSpec : StringSpec({
     "tickets are refreshed after expiration" {
         val expected = listOf(Ticket(now(), FEATURE))
         val tickets = mock<Tickets> {
-            on { after(any()) }.doReturn(listOf(Ticket(now(), FEATURE), Ticket(now(), BUG)), expected)
+            on { after(any()) }.doReturn(listOf(aTicket(type = FEATURE), aTicket(type = BUG)), expected)
         }
         val duration = Duration.ofMillis(100)
         val ticketsCache = TicketsCache(tickets, duration)
