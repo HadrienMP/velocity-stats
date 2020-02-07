@@ -12,7 +12,7 @@ import java.time.LocalDate.*
 class TicketsCacheSpec {
 
     @Test
-    internal fun name() {
+    internal fun `Delegates to a tickets source`() {
         val tickets = mock(Tickets::class.java)
         val expected = listOf(Ticket(now(), FEATURE), Ticket(now(), BUG))
         given(tickets.all()).willReturn(expected)
@@ -21,11 +21,6 @@ class TicketsCacheSpec {
 
         assertThat(actual).isEqualTo(expected);
     }
-
-
-
-
-
 
     class TicketsCache(val tickets: Tickets){
         fun cachedAll() = tickets.all()
