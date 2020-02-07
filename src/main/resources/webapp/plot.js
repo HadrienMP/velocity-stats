@@ -13,6 +13,7 @@ $.get("/stats/tickets-finished-per-month", function (stats) {
         'monthBoxPlot',
         toBoxPlotData(stats),
         { title: 'Boxplot of the number of tickets done by month' });
+    $("#monthPlot .fa-circle-notch, #monthBoxPlot .fa-circle-notch").remove();
 });
 
 $.get("/stats/tickets-finished-per-week", function (stats) {
@@ -25,6 +26,7 @@ $.get("/stats/tickets-finished-per-week", function (stats) {
         'weekBoxPlot',
         toBoxPlotData(stats),
         { title: 'Boxplot of the number of tickets done by week' });
+    $("#weekPlot .fa-circle-notch, #weekBoxPlot .fa-circle-notch").remove();
 });
 
 $.get("/stats/cycle-times", function (stats) {
@@ -38,6 +40,7 @@ $.get("/stats/cycle-times", function (stats) {
             boxplot(stats["5"], '5 points')
         ],
         { title: 'Cycle times / story points' });
+    $("#cycleTimes .fa-circle-notch").remove();
 });
 
 $.get("/stats/points-repartition", function (stats) {
@@ -54,6 +57,7 @@ $.get("/stats/points-repartition", function (stats) {
     };
 
     Plotly.newPlot('pointsRepartition', data, layout);
+    $("#pointsRepartition .fa-circle-notch").remove();
 });
 
 //

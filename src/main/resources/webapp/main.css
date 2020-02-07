@@ -9,3 +9,13 @@ h1, h2, hr {
     min-width: 300px;
     width: 50%;
 }
+
+.plot > div {
+    height: 445px;
+    text-align: center;
+}
+
+.plot .fa-circle-notch {
+    font-size: 4em;
+    margin-top: 100px;
+}
