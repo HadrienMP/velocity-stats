@@ -17,11 +17,17 @@ class TicketsCacheSpec {
         val expected = listOf(Ticket(now(), FEATURE), Ticket(now(), BUG))
         given(tickets.all()).willReturn(expected)
 
-        val actual = cachedAll(tickets)
+        val actual = TicketsCache(tickets).cachedAll()
 
         assertThat(actual).isEqualTo(expected);
     }
 
-    private fun cachedAll(tickets: Tickets) = tickets.all()
 
+
+
+
+
+    class TicketsCache(val tickets: Tickets){
+        fun cachedAll() = tickets.all()
+    }
 }
