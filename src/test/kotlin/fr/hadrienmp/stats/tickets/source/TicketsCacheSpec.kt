@@ -44,11 +44,12 @@ class TicketsCacheSpec: StringSpec({
         ticketsCache.all()
         Thread.sleep(duration.toMillis())
         ticketsCache.all()
+        ticketsCache.all()
 
         verify(tickets, times(2)).all()
     }
 
-    "call the source after expirationn" {
+    "tickets are refreshed after expiration" {
         val tickets = mock(Tickets::class.java)
         val expected = listOf(Ticket(now(), FEATURE))
         given(tickets.all()).willReturn(listOf(Ticket(now(), FEATURE), Ticket(now(), BUG)), expected)
@@ -57,10 +58,8 @@ class TicketsCacheSpec: StringSpec({
 
         ticketsCache.all()
         Thread.sleep(duration.toMillis())
-        ticketsCache.all()
         val actual = ticketsCache.all()
 
-        verify(tickets, times(2)).all()
         assertThat(actual).isEqualTo(expected)
     }
 })
