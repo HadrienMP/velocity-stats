@@ -1,5 +1,7 @@
 package fr.hadrienmp.stats.tickets.source
 
+import com.github.benmanes.caffeine.cache.Caffeine
+import com.github.benmanes.caffeine.cache.LoadingCache
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -16,6 +18,8 @@ import java.time.LocalDate.now
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.time.ZonedDateTime.parse
+import java.util.concurrent.TimeUnit
+
 
 class TicketsCacheSpec : StringSpec({
     val date = parse("2018-12-31T00:00:00Z")
@@ -77,20 +81,11 @@ class TicketsCacheSpec : StringSpec({
     }
 })
 
-class TicketsCache(private val tickets: Tickets, private val timeToLive: Duration) : Tickets {
-    private var cachedTickets = listOf<Ticket>()
-    private var lastUpdate = LocalDateTime.now().minus(timeToLive).minusMinutes(1)
+class TicketsCache(private val tickets: Tickets, timeToLive: Duration) : Tickets {
+    var cache: LoadingCache<ZonedDateTime, List<Ticket>> = Caffeine.newBuilder()
+            .maximumSize(10000)
+            .expireAfterWrite(timeToLive)
+            .build<ZonedDateTime, List<Ticket>> { key: ZonedDateTime -> tickets.after(key) }
 
-    override fun after(date: ZonedDateTime): List<Ticket> {
-        if (isExpired())
-            updateCache(date)
-        return cachedTickets
-    }
-
-    private fun isExpired() = Duration.between(lastUpdate, LocalDateTime.now()) >= timeToLive
-
-    private fun updateCache(date: ZonedDateTime) {
-        lastUpdate = LocalDateTime.now()
-        cachedTickets = tickets.after(date)
-    }
+    override fun after(date: ZonedDateTime) = cache.get(date) ?: tickets.after(date)
 }
