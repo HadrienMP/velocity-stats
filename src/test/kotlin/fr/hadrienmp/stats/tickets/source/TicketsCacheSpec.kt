@@ -1,18 +1,19 @@
 package fr.hadrienmp.stats.tickets.source
 
 import fr.hadrienmp.stats.domain.Ticket
-import fr.hadrienmp.stats.domain.TicketType.*
+import fr.hadrienmp.stats.domain.TicketType.BUG
+import fr.hadrienmp.stats.domain.TicketType.FEATURE
 import fr.hadrienmp.stats.domain.Tickets
 import io.kotlintest.specs.StringSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.*
 import java.time.Duration
-import java.time.LocalDate.*
+import java.time.LocalDate.now
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
 
-class TicketsCacheSpec: StringSpec({
+class TicketsCacheSpec : StringSpec({
     "Delegates to a tickets source" {
         val tickets = mock(Tickets::class.java)
         val expected = listOf(Ticket(now(), FEATURE), Ticket(now(), BUG))
@@ -64,22 +65,22 @@ class TicketsCacheSpec: StringSpec({
     }
 })
 
-class TicketsCache(private val tickets: Tickets, private val duration: Duration):Tickets{
-    private var list = tickets.all()
+class TicketsCache(private val tickets: Tickets, private val timeToLive: Duration) : Tickets {
+    private var cachedTickets = tickets.all()
     private var lastUpdate = LocalDateTime.now()
 
     override fun all(): List<Ticket> {
         if (isExpired())
             updateCache()
-        return list
+        return cachedTickets
     }
+
+    private fun isExpired() = Duration.between(lastUpdate, LocalDateTime.now()) >= timeToLive
 
     private fun updateCache() {
         lastUpdate = LocalDateTime.now()
-        list= tickets.all()
+        cachedTickets = tickets.all()
     }
-
-    private fun isExpired() = Duration.between(lastUpdate, LocalDateTime.now()) >= duration
 
     override fun after(date: ZonedDateTime): List<Ticket> {
         TODO("not implemented")
