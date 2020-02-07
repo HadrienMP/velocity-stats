@@ -7,7 +7,7 @@ import fr.hadrienmp.stats.tickets.source.pivotal.model.PivotalTicket
 import java.time.ZonedDateTime
 
 class Pivotal(private val pivotalClient: PivotalClient) : Tickets {
-    override fun after(date: ZonedDateTime): List<Ticket> {
-        return pivotalClient.tickets(date).map(PivotalTicket::toTicket)
+    override fun after(analysisStartDate: ZonedDateTime): List<Ticket> {
+        return pivotalClient.tickets(analysisStartDate).map(PivotalTicket::toTicket)
     }
 }

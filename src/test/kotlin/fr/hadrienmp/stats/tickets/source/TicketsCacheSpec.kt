@@ -1,7 +1,5 @@
 package fr.hadrienmp.stats.tickets.source
 
-import com.github.benmanes.caffeine.cache.Caffeine
-import com.github.benmanes.caffeine.cache.LoadingCache
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -15,7 +13,6 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import java.time.Duration
 import java.time.LocalDate.now
-import java.time.ZonedDateTime
 import java.time.ZonedDateTime.parse
 
 
@@ -82,11 +79,3 @@ class TicketsCacheSpec : StringSpec({
     }
 })
 
-class TicketsCache(private val tickets: Tickets, timeToLive: Duration) : Tickets {
-    var cache: LoadingCache<ZonedDateTime, List<Ticket>> = Caffeine.newBuilder()
-            .maximumSize(10000)
-            .expireAfterWrite(timeToLive)
-            .build<ZonedDateTime, List<Ticket>> { key: ZonedDateTime -> tickets.after(key) }
-
-    override fun after(date: ZonedDateTime) = cache.get(date) ?: tickets.after(date)
-}
