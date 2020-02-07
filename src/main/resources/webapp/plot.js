@@ -5,6 +5,8 @@
 // ########################################
 
 $.get("/stats/tickets-finished-per-month", function (stats) {
+    $("#monthPlot").innerHTML("");
+    $("#monthBoxPlot").innerHTML("");
     Plotly.newPlot(
         'monthPlot',
         toPlotData(stats),
@@ -16,6 +18,8 @@ $.get("/stats/tickets-finished-per-month", function (stats) {
 });
 
 $.get("/stats/tickets-finished-per-week", function (stats) {
+    $("#weekPlot").innerHTML("");
+    $("#weekBoxPlot").innerHTML("");
     Plotly.newPlot(
         'weekPlot',
         toPlotData(stats),
@@ -28,6 +32,7 @@ $.get("/stats/tickets-finished-per-week", function (stats) {
 });
 
 $.get("/stats/cycle-times", function (stats) {
+    $("#cycleTimes").innerHTML("");
     Plotly.newPlot(
         'cycleTimes',
         [
@@ -41,6 +46,7 @@ $.get("/stats/cycle-times", function (stats) {
 });
 
 $.get("/stats/points-repartition", function (stats) {
+    $("#pointsRepartition").innerHTML("");
     var data = [{
         values: Object.values(stats),
         labels: Object.keys(stats),
