@@ -15,10 +15,8 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import java.time.Duration
 import java.time.LocalDate.now
-import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.time.ZonedDateTime.parse
-import java.util.concurrent.TimeUnit
 
 
 class TicketsCacheSpec : StringSpec({
@@ -38,16 +36,19 @@ class TicketsCacheSpec : StringSpec({
         assertThat(actual).isEqualTo(expected)
     }
 
-    "tickets are cached" {
-        val tickets = mock<Tickets> {
-            on { after(any()) } doReturn listOf(Ticket(now(), FEATURE), Ticket(now(), BUG))
-        }
+    "tickets are cached by zoned date time" {
+        val tickets = mock<Tickets> {}
         val ticketsCache = TicketsCache(tickets, Duration.ofMillis(100))
+        val firstDate = parse("2010-01-01T00:00:00Z")
+        val secondDate = parse("2019-12-31T00:00:00Z")
 
-        ticketsCache.after(date)
-        ticketsCache.after(date)
+        ticketsCache.after(firstDate)
+        ticketsCache.after(secondDate)
+        ticketsCache.after(firstDate)
+        ticketsCache.after(secondDate)
 
-        verify(tickets, times(1)).after(any())
+        verify(tickets, times(1)).after(firstDate)
+        verify(tickets, times(1)).after(secondDate)
     }
 
     "call the source after expiration" {
