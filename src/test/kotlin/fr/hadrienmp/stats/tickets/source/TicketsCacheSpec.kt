@@ -12,77 +12,75 @@ import java.time.Duration
 import java.time.LocalDate.now
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
+import java.time.ZonedDateTime.parse
 
 class TicketsCacheSpec : StringSpec({
+    val date = parse("2018-12-31T00:00:00Z")
     "Delegates to a tickets source" {
         val tickets = mock(Tickets::class.java)
         val expected = listOf(Ticket(now(), FEATURE), Ticket(now(), BUG))
-        given(tickets.all()).willReturn(expected)
+        given(tickets.after(date)).willReturn(expected)
         val ticketsCache = TicketsCache(tickets, Duration.ofMillis(100))
 
-        val actual = ticketsCache.all()
+        val actual = ticketsCache.after(date)
 
         assertThat(actual).isEqualTo(expected)
     }
 
     "tickets are cached" {
         val tickets = mock(Tickets::class.java)
-        given(tickets.all()).willReturn(listOf(Ticket(now(), FEATURE), Ticket(now(), BUG)))
+        given(tickets.after(date)).willReturn(listOf(Ticket(now(), FEATURE), Ticket(now(), BUG)))
         val ticketsCache = TicketsCache(tickets, Duration.ofMillis(100))
 
-        ticketsCache.all()
-        ticketsCache.all()
+        ticketsCache.after(date)
+        ticketsCache.after(date)
 
-        verify(tickets, times(1)).all()
+        verify(tickets, times(1)).after(date)
     }
 
     "call the source after expiration" {
         val tickets = mock(Tickets::class.java)
-        given(tickets.all()).willReturn(listOf(Ticket(now(), FEATURE), Ticket(now(), BUG)))
+        given(tickets.after(date)).willReturn(listOf(Ticket(now(), FEATURE), Ticket(now(), BUG)))
         val duration = Duration.ofMillis(100)
         val ticketsCache = TicketsCache(tickets, duration)
 
-        ticketsCache.all()
+        ticketsCache.after(date)
         Thread.sleep(duration.toMillis())
-        ticketsCache.all()
-        ticketsCache.all()
+        ticketsCache.after(date)
+        ticketsCache.after(date)
 
-        verify(tickets, times(2)).all()
+        verify(tickets, times(2)).after(date)
     }
 
     "tickets are refreshed after expiration" {
         val tickets = mock(Tickets::class.java)
         val expected = listOf(Ticket(now(), FEATURE))
-        given(tickets.all()).willReturn(listOf(Ticket(now(), FEATURE), Ticket(now(), BUG)), expected)
+        given(tickets.after(date)).willReturn(listOf(Ticket(now(), FEATURE), Ticket(now(), BUG)), expected)
         val duration = Duration.ofMillis(100)
         val ticketsCache = TicketsCache(tickets, duration)
 
-        ticketsCache.all()
+        ticketsCache.after(date)
         Thread.sleep(duration.toMillis())
-        val actual = ticketsCache.all()
+        val actual = ticketsCache.after(date)
 
         assertThat(actual).isEqualTo(expected)
     }
 })
 
 class TicketsCache(private val tickets: Tickets, private val timeToLive: Duration) : Tickets {
-    private var cachedTickets = tickets.all()
-    private var lastUpdate = LocalDateTime.now()
+    private var cachedTickets = listOf<Ticket>()
+    private var lastUpdate = LocalDateTime.now().minus(timeToLive).minusMinutes(1)
 
-    override fun all(): List<Ticket> {
+    override fun after(date: ZonedDateTime): List<Ticket> {
         if (isExpired())
-            updateCache()
+            updateCache(date)
         return cachedTickets
     }
 
     private fun isExpired() = Duration.between(lastUpdate, LocalDateTime.now()) >= timeToLive
 
-    private fun updateCache() {
+    private fun updateCache(date: ZonedDateTime) {
         lastUpdate = LocalDateTime.now()
-        cachedTickets = tickets.all()
-    }
-
-    override fun after(date: ZonedDateTime): List<Ticket> {
-        TODO("not implemented")
+        cachedTickets = tickets.after(date)
     }
 }
