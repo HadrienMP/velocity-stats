@@ -1,1 +1,1 @@
-web: ./build/install/velocity-stats/bin/velocity-stats port=$PORT
+web: ./build/install/velocity-stats/bin/velocity-stats port=$PORT pivotalProjectId=$pivotalProjectId pivotalToken=$pivotalToken
