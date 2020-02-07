@@ -1,0 +1,11 @@
+
+h1, h2, hr {
+    z-index: 100;
+    position: relative;
+}
+
+.plot {
+    display: inline-block;
+    min-width: 300px;
+    width: 50%;
+}

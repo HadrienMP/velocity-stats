@@ -1,0 +1,113 @@
+{
+  "kind": "story",
+  "id": 155583051,
+  "created_at": "2018-02-28T09:04:39Z",
+  "updated_at": "2018-02-28T13:52:09Z",
+  "accepted_at": "2018-02-28T13:52:09Z",
+  "estimate": 0,
+  "story_type": "feature",
+  "name": "Permettre à certains utilisateurs BACKOFFICE FA de pouvoir créer les utilisateurs dans Auth0",
+  "description": "Cf. Titre",
+  "current_state": "accepted",
+  "requested_by_id": 56943,
+  "url": "https://www.pivotaltracker.com/story/show/155583051",
+  "project_id": 2019903,
+  "owner_ids": [
+    56943
+  ],
+  "labels": [
+    {
+      "id": 18553349,
+      "project_id": 2019903,
+      "kind": "label",
+      "name": "administration",
+      "created_at": "2017-06-01T09:57:23Z",
+      "updated_at": "2017-06-01T09:57:23Z"
+    },
+    {
+      "id": 19364591,
+      "project_id": 2019903,
+      "kind": "label",
+      "name": "auth0",
+      "created_at": "2017-11-08T14:50:50Z",
+      "updated_at": "2017-11-08T14:50:50Z"
+    },
+    {
+      "id": 19802365,
+      "project_id": 2019903,
+      "kind": "label",
+      "name": "support",
+      "created_at": "2018-02-28T09:04:38Z",
+      "updated_at": "2018-02-28T09:04:38Z"
+    },
+    {
+      "id": 18533129,
+      "project_id": 2019903,
+      "kind": "label",
+      "name": "user",
+      "created_at": "2017-05-30T11:52:45Z",
+      "updated_at": "2017-05-30T11:52:45Z"
+    }
+  ],
+  "transitions": [
+    {
+      "state": "accepted",
+      "story_id": 155583051,
+      "project_id": 2019903,
+      "project_version": 6426,
+      "occurred_at": "2018-02-28T13:52:09Z",
+      "performed_by_id": 56943,
+      "kind": "story_transition"
+    },
+    {
+      "state": "delivered",
+      "story_id": 155583051,
+      "project_id": 2019903,
+      "project_version": 6425,
+      "occurred_at": "2018-02-28T13:52:04Z",
+      "performed_by_id": 56943,
+      "kind": "story_transition"
+    },
+    {
+      "state": "finished",
+      "story_id": 155583051,
+      "project_id": 2019903,
+      "project_version": 6414,
+      "occurred_at": "2018-02-28T10:45:28Z",
+      "performed_by_id": 56943,
+      "kind": "story_transition"
+    },
+    {
+      "state": "started",
+      "story_id": 155583051,
+      "project_id": 2019903,
+      "project_version": 6400,
+      "occurred_at": "2018-02-28T09:08:03Z",
+      "performed_by_id": 56943,
+      "kind": "story_transition"
+    },
+    {
+      "state": "planned",
+      "story_id": 155583051,
+      "project_id": 2019903,
+      "project_version": 6396,
+      "occurred_at": "2018-02-28T09:04:39Z",
+      "performed_by_id": 56943,
+      "kind": "story_transition"
+    }
+  ],
+  "cycle_time_details": {
+    "total_cycle_time": 17046000,
+    "started_time": 5845000,
+    "started_count": 1,
+    "finished_time": 11196000,
+    "finished_count": 1,
+    "delivered_time": 5000,
+    "delivered_count": 1,
+    "rejected_time": 0,
+    "rejected_count": 0,
+    "story_id": 155583051,
+    "kind": "cycle_time_details"
+  },
+  "owned_by_id": 56943
+}
