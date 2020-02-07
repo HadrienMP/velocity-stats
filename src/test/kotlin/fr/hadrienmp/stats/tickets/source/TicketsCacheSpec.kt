@@ -35,7 +35,7 @@ class TicketsCacheSpec: StringSpec({
         verify(tickets, times(1)).all()
     }
 
-    "tickets are cached 2" {
+    "call the source after expiration" {
         val tickets = mock(Tickets::class.java)
         given(tickets.all()).willReturn(listOf(Ticket(now(), FEATURE), Ticket(now(), BUG)))
         val duration = Duration.ofMillis(100)
@@ -47,16 +47,37 @@ class TicketsCacheSpec: StringSpec({
 
         verify(tickets, times(2)).all()
     }
+
+    "call the source after expirationn" {
+        val tickets = mock(Tickets::class.java)
+        val expected = listOf(Ticket(now(), FEATURE))
+        given(tickets.all()).willReturn(listOf(Ticket(now(), FEATURE), Ticket(now(), BUG)), expected)
+        val duration = Duration.ofMillis(100)
+        val ticketsCache = TicketsCache(tickets, duration)
+
+        ticketsCache.all()
+        Thread.sleep(duration.toMillis())
+        ticketsCache.all()
+        val actual = ticketsCache.all()
+
+        verify(tickets, times(2)).all()
+        assertThat(actual).isEqualTo(expected)
+    }
 })
 
 class TicketsCache(private val tickets: Tickets, private val duration: Duration):Tickets{
-    private val list = tickets.all()
-    private val lastUpdate = LocalDateTime.now()
+    private var list = tickets.all()
+    private var lastUpdate = LocalDateTime.now()
 
     override fun all(): List<Ticket> {
         if (isExpired())
-            tickets.all()
+            updateCache()
         return list
+    }
+
+    private fun updateCache() {
+        lastUpdate = LocalDateTime.now()
+        list= tickets.all()
     }
 
     private fun isExpired() = Duration.between(lastUpdate, LocalDateTime.now()) >= duration
