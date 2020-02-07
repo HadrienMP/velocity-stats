@@ -1,5 +1,8 @@
 package fr.hadrienmp.stats.tickets.source
 
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
 import fr.hadrienmp.stats.domain.Ticket
 import fr.hadrienmp.stats.domain.TicketType.BUG
 import fr.hadrienmp.stats.domain.TicketType.FEATURE
@@ -7,7 +10,9 @@ import fr.hadrienmp.stats.domain.Tickets
 import io.kotlintest.specs.StringSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.mockito.BDDMockito.given
-import org.mockito.Mockito.*
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.times
 import java.time.Duration
 import java.time.LocalDate.now
 import java.time.LocalDateTime
@@ -17,9 +22,12 @@ import java.time.ZonedDateTime.parse
 class TicketsCacheSpec : StringSpec({
     val date = parse("2018-12-31T00:00:00Z")
     "Delegates to a tickets source" {
-        val tickets = mock(Tickets::class.java)
+
         val expected = listOf(Ticket(now(), FEATURE), Ticket(now(), BUG))
-        given(tickets.after(date)).willReturn(expected)
+        val tickets = mock<Tickets> {
+            on { after(any()) } doReturn expected
+        }
+
         val ticketsCache = TicketsCache(tickets, Duration.ofMillis(100))
 
         val actual = ticketsCache.after(date)
@@ -28,8 +36,9 @@ class TicketsCacheSpec : StringSpec({
     }
 
     "tickets are cached" {
-        val tickets = mock(Tickets::class.java)
-        given(tickets.after(date)).willReturn(listOf(Ticket(now(), FEATURE), Ticket(now(), BUG)))
+        val tickets = mock<Tickets> {
+            on { after(any()) } doReturn listOf(Ticket(now(), FEATURE), Ticket(now(), BUG))
+        }
         val ticketsCache = TicketsCache(tickets, Duration.ofMillis(100))
 
         ticketsCache.after(date)
@@ -39,8 +48,9 @@ class TicketsCacheSpec : StringSpec({
     }
 
     "call the source after expiration" {
-        val tickets = mock(Tickets::class.java)
-        given(tickets.after(date)).willReturn(listOf(Ticket(now(), FEATURE), Ticket(now(), BUG)))
+        val tickets = mock<Tickets> {
+            on { after(any()) } doReturn listOf(Ticket(now(), FEATURE), Ticket(now(), BUG))
+        }
         val duration = Duration.ofMillis(100)
         val ticketsCache = TicketsCache(tickets, duration)
 
@@ -53,9 +63,10 @@ class TicketsCacheSpec : StringSpec({
     }
 
     "tickets are refreshed after expiration" {
-        val tickets = mock(Tickets::class.java)
         val expected = listOf(Ticket(now(), FEATURE))
-        given(tickets.after(date)).willReturn(listOf(Ticket(now(), FEATURE), Ticket(now(), BUG)), expected)
+        val tickets = mock<Tickets> {
+            on { after(any()) }.doReturn(listOf(Ticket(now(), FEATURE), Ticket(now(), BUG)), expected)
+        }
         val duration = Duration.ofMillis(100)
         val ticketsCache = TicketsCache(tickets, duration)
 
