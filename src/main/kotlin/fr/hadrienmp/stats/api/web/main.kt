@@ -27,21 +27,21 @@ fun webapp(port: Port, pivotalClient: PivotalClient): WebApp {
             it.renderThymeleaf("plots.html")
         }
 
-        val ticketsCache = TicketsCache(Pivotal(pivotalClient), Duration.ofMinutes(5))
+        val tickets = TicketsCache(Pivotal(pivotalClient), Duration.ofMinutes(5))
         val analysisStartDate = ZonedDateTime.now().minusMonths(6).withDayOfMonth(1)
 
 
         it.get("/stats/tickets-finished-per-month") {
-            it.json(statsOf(ticketsCache.after(analysisStartDate), Ticket::finishMonth))
+            it.json(statsOf(tickets.after(analysisStartDate), Ticket::finishMonth))
         }
         it.get("/stats/tickets-finished-per-week") {
-            it.json(statsOf(ticketsCache.after(analysisStartDate), Ticket::finishWeek))
+            it.json(statsOf(tickets.after(analysisStartDate), Ticket::finishWeek))
         }
         it.get("/stats/cycle-times") {
-            it.json(ticketsCache.after(analysisStartDate).timesInDaysByPoint(Ticket::cycleTime))
+            it.json(tickets.after(analysisStartDate).timesInDaysByPoint(Ticket::cycleTime))
         }
         it.get("/stats/points-repartition") {
-            it.json(ticketsCache.after(analysisStartDate)
+            it.json(tickets.after(analysisStartDate)
                     .countBy(Ticket::points)
                     .mapKeys { "${it.key} points" })
         }
