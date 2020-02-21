@@ -19,12 +19,7 @@ import fr.hadrienmp.stats.tickets.source.jira.client.Ticket as JiraTicket
 internal class JiraSpec : StringSpec({
     "map the jira page response to tickets" {
         val pageClient = mock<PageClient> {
-            on { ticketsAfter(eq(ZonedDateTime.parse("2010-01-01T00:00:00Z").toLocalDate()), any()) } doReturn Response(
-                    startAt = 0,
-                    maxResults = 50,
-                    total = 4,
-                    issues = emptyList()
-            )
+            on { ticketsAfter(eq(ZonedDateTime.parse("2010-01-01T00:00:00Z").toLocalDate()), any()) } doReturn emptyPage()
             on { ticketsAfter(ZonedDateTime.parse("2010-01-01T00:00:00Z").toLocalDate(), 0) } doReturn Response(
                     startAt = 0,
                     maxResults = 50,
@@ -68,12 +63,7 @@ internal class JiraSpec : StringSpec({
     }
     "dates at midnight" {
         val pageClient = mock<PageClient> {
-            on { ticketsAfter(eq(ZonedDateTime.parse("2010-01-01T00:00:00Z").toLocalDate()), any()) } doReturn Response(
-                    startAt = 0,
-                    maxResults = 50,
-                    total = 4,
-                    issues = emptyList()
-            )
+            on { ticketsAfter(eq(ZonedDateTime.parse("2010-01-01T00:00:00Z").toLocalDate()), any()) } doReturn emptyPage()
             on { ticketsAfter(ZonedDateTime.parse("2010-01-01T00:00:00Z").toLocalDate(), 0) } doReturn Response(
                     startAt = 0,
                     maxResults = 50,
@@ -93,12 +83,7 @@ internal class JiraSpec : StringSpec({
     }
     "return all the tickets when there is multiple pages" {
         val pageClient = mock<PageClient> {
-            on { ticketsAfter(eq(ZonedDateTime.parse("2010-01-01T00:00:00Z").toLocalDate()), any()) } doReturn Response(
-                    startAt = 0,
-                    maxResults = 50,
-                    total = 4,
-                    issues = emptyList()
-            )
+            on { ticketsAfter(eq(ZonedDateTime.parse("2010-01-01T00:00:00Z").toLocalDate()), any()) } doReturn emptyPage()
             on { ticketsAfter(ZonedDateTime.parse("2010-01-01T00:00:00Z").toLocalDate(), 0) } doReturn Response(
                     startAt = 0,
                     maxResults = 50,
@@ -146,4 +131,13 @@ internal class JiraSpec : StringSpec({
                         finishDate = LocalDate.parse("2019-12-01")))
     }
 })
+
+private fun emptyPage(): Response {
+    return Response(
+            startAt = 0,
+            maxResults = 50,
+            total = 4,
+            issues = emptyList()
+    )
+}
 

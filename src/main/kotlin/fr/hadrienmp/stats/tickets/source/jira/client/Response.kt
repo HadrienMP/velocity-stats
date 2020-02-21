@@ -13,16 +13,19 @@ data class Response(val startAt: Int,
 data class Ticket(val fields: Fields) {
     fun toCore(): fr.hadrienmp.stats.domain.Ticket {
         return fr.hadrienmp.stats.domain.Ticket(
-                createDate = LocalDate.parse(fields.created, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")),
+                createDate = parseJiraDate(fields.created),
                 points = fields.estimate?.toInt(),
                 type = when (fields.type.name) {
                     "Récit" -> TicketType.FEATURE
                     "Bogue" -> TicketType.BUG
                     else -> TicketType.UNKNOWN
                 },
-                finishDate = fields.acceptedAt?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")) }
+                finishDate = fields.acceptedAt?.let { parseJiraDate(it) }
         )
     }
+
+    private fun parseJiraDate(it: String) =
+            LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ"))
 }
 data class Fields(val status: Status? = null,
                   val created: String,
