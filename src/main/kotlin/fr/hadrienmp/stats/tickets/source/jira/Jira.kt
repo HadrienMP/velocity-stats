@@ -6,7 +6,7 @@ import java.nio.charset.Charset
 import java.time.LocalDate
 import java.util.*
 
-fun jiraTickets(credentials: Credentials, project: String, dateAfter: LocalDate, jiraHost: String) =
+fun jiraTickets(credentials: Credentials, jiraHost: String, project: String, dateAfter: LocalDate) =
         JdkRequest("$jiraHost/rest/api/latest/search")
                 .header("authorization", "Basic ${credentials.toBase64()}")
                 .header("content-type", "application/json")

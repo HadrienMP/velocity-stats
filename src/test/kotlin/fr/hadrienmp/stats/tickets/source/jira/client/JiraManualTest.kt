@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
     val project = args.first { it.matches(Regex("jira.project=.*")) }.split("=")[1]
     val jiraHost = args.first { it.matches(Regex("jira.host=.*")) }.split("=")[1]
 
-    val jiraTickets = jiraTickets(credentials, project, LocalDate.now().minusMonths(6).withDayOfMonth(1), jiraHost)
+    val jiraTickets = jiraTickets(credentials, jiraHost, project, LocalDate.now().minusMonths(6).withDayOfMonth(1))
     File("src/test/kotlin/fr/hadrienmp/stats/tickets/source/jira/client/tickets.json")
             .writeText(jiraTickets.body(), defaultCharset())
 }
