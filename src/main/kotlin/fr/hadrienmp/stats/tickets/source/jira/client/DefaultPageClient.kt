@@ -6,12 +6,12 @@ import fr.hadrienmp.stats.tickets.source.pivotal.Parser
 import java.time.LocalDate
 
 interface PageClient {
-    fun ticketsAfter(localDate: LocalDate): Response
+    fun ticketsAfter(localDate: LocalDate, offset: Int): Response
 }
 
 class DefaultPageClient(val credentials: Credentials, private val jiraHost: String, val project: String) : PageClient {
-    override fun ticketsAfter(localDate: LocalDate) = Parser.parse<Response>(
-            JdkRequest("$jiraHost/rest/api/latest/search")
+    override fun ticketsAfter(localDate: LocalDate, offset: Int) = Parser.parse<Response>(
+            JdkRequest("$jiraHost/rest/api/latest/search?startAt=$offset")
                     .header("authorization", "Basic ${credentials.toBase64()}")
                     .header("content-type", "application/json")
                     .method(Request.POST)
