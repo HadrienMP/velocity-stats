@@ -12,9 +12,6 @@ fun main(args: Array<String>) {
 
     val jiraTicketsResponse = PageClient(credentials, jiraHost, project).ticketsAfter(LocalDate.now())
 
-    println(jiraTicketsResponse.parsed)
-
-    File("src/test/kotlin/fr/hadrienmp/stats/tickets/source/jira/client/tickets.json")
-            .writeText(jiraTicketsResponse.raw.body(), defaultCharset())
+    println(jiraTicketsResponse)
 }
 
