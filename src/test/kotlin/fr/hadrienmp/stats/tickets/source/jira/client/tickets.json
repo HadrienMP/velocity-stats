@@ -10138,8 +10138,8 @@
         "customfield_12100": null,
         "customfield_12221": null,
         "aggregateprogress": {
-          "progress": 54000,
-          "total": 54000,
+          "progress": 118800,
+          "total": 118800,
           "percent": 100
         },
         "customfield_11013": null,
@@ -10169,8 +10169,8 @@
         "customfield_11805": null,
         "customfield_11807": null,
         "progress": {
-          "progress": 54000,
-          "total": 54000,
+          "progress": 118800,
+          "total": 118800,
           "percent": 100
         },
         "customfield_11809": null,
@@ -10189,7 +10189,7 @@
           "subtask": false,
           "avatarId": 10315
         },
-        "timespent": 54000,
+        "timespent": 118800,
         "project": {
           "self": "https://jira.financeactive.com/rest/api/2/project/11900",
           "id": "11900",
@@ -10205,7 +10205,7 @@
         "customfield_12211": null,
         "customfield_12210": null,
         "customfield_12213": null,
-        "aggregatetimespent": 54000,
+        "aggregatetimespent": 118800,
         "customfield_12212": null,
         "customfield_11004": null,
         "customfield_11401": null,
@@ -10250,7 +10250,7 @@
         "customfield_11902": null,
         "customfield_11903": null,
         "customfield_11907": null,
-        "updated": "2020-02-20T18:04:31.000+0100",
+        "updated": "2020-02-21T09:45:35.000+0100",
         "timeoriginalestimate": null,
         "description": "Examples:\r\n{code:java}\r\n{\r\n    \"id\": 123,\r\n    \"caracteristics\": {\r\n        \"initial_amount\": 56545,\r\n        \"direction\": \"ISSUED\",\r\n        \"object\": \"une belle description\",\r\n        \"type\": \"BANK_INSURANCE\",\r\n        \"purpose\": {\r\n            \"id\": 56465464,\r\n            \"default label\": \"blabla\"\r\n        },\r\n        \"Commitment type\": {\r\n            \"id\": 654654564564,\r\n            \"default label\": \"mon label\"\r\n        },\r\n        \"Country\": \"FR\",\r\n        \"BU\": {\r\n            \"id\": 564654654,\r\n            \"default label\": \"Ma bu\"\r\n        },\r\n        \"reference\": \"Ref. 1049474214500416148\",\r\n        \"external_reference_code\": \"Ref. externe 1049474214500416148 \",\r\n        \"ecaution_reference_code\": \"\"\r\n    },\r\n    \"dates\": {\r\n        \"authorization_date\": \"2020-12-11\",\r\n        \"effective_date\": \"2020-12-01\",\r\n        \"nominal_expiry_date\": \"2021-11-11\"\r\n    },\r\n    \"third_parties\": {\r\n        \"principal\": {\r\n            \"id\": 654654654564,\r\n            \"code\": \"code 654654654564\"\r\n        },\r\n        \"applicant\": {\r\n            \"id\": 654654654564,\r\n            \"code\": \"code 654654654564\"\r\n        },\r\n        \"guarantor\": {\r\n            \"id\": 654654654564,\r\n            \"code\": \"code 654654654564\"\r\n        },\r\n        \"local_guarantor\": {\r\n            \"id\": 654654654564,\r\n            \"code\": \"code 654654654564\"\r\n        },\r\n        \"beneficiary\": {\r\n            \"id\": 654654654564,\r\n            \"code\": \"code 654654654564\"\r\n        }\r\n    },\r\n    \"current_values\": {\r\n        \"current_status\": \"EFFECTIVE\"\r\n    },\r\n    \"custom_properties\": {\r\n        \"dates\": [\r\n            {\r\n                \"id\": 123,\r\n                \"name\": \"My custom date\",\r\n                \"value\": {}\r\n            }\r\n        ],\r\n        \"texts\": [\r\n            {\r\n                \"id\": 234,\r\n                \"name\": \"My custom text\",\r\n                \"value\": \"My Custom Text\"\r\n            }\r\n        ],\r\n        \"booleans\": [\r\n            {\r\n                \"id\": 456,\r\n                \"name\": \"My custom boolean\",\r\n                \"value\": true\r\n            }\r\n        ],\r\n        \"numbers\": [\r\n            {\r\n                \"id\": 345,\r\n                \"name\": \"My custom number\",\r\n                \"value\": 123.23\r\n            }\r\n        ],\r\n        \"integers\": [\r\n            {\r\n                \"id\": 567,\r\n                \"name\": \"My custom integer\",\r\n                \"value\": 134\r\n            }\r\n        ],\r\n        \"amounts\": [\r\n            {\r\n                \"id\": 789,\r\n                \"name\": \"My custom amount\",\r\n                \"value\": {\r\n                    \"amount\": 18000.99,\r\n                    \"currency\": \"AED\"\r\n                }\r\n            }\r\n        ],\r\n        \"unique_choices\": [\r\n            {\r\n                \"id\": 890,\r\n                \"name\": \"My custom choice\",\r\n                \"value\": {\r\n                    \"id\": 234,\r\n                    \"default_label\": \"234\"\r\n                }\r\n            }\r\n        ]\r\n    }\r\n}\r\n\r\n\r\n{code}\r\n  \r\n\r\n+Notes :+\r\n * \"Current status\" should be the status as of request time (same as 'status' in the HMI)",
         "customfield_11100": null,

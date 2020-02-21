@@ -3,10 +3,10 @@ package fr.hadrienmp.stats.tickets.source.jira.client
 import fr.hadrienmp.stats.tickets.source.jira.credentials
 import fr.hadrienmp.stats.tickets.source.jira.jiraTickets
 import fr.hadrienmp.stats.tickets.source.pivotal.Parser
-import fr.hadrienmp.stats.tickets.source.pivotal.model.PivotalTicketsResponse
 import java.io.File
 import java.nio.charset.Charset.defaultCharset
 import java.time.LocalDate
+import java.time.ZonedDateTime
 
 fun main(args: Array<String>) {
     val credentials = credentials(args)
@@ -26,9 +26,9 @@ data class Response(val startAt: Int,
                     val total: Int,
                     val issues: List<Ticket>)
 
-data class Ticket(val fields: Field)
+data class Ticket(val fields: Fields)
 
-data class Field(val status: Status? = null)
+data class Fields(val status: Status? = null, val resolutiondate: String? = null, val customfield_10002: Float = 0f)
 
 data class Status(val statusCategory: StatusCategory)
 
