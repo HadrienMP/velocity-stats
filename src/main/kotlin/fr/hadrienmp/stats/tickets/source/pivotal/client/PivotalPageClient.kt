@@ -15,16 +15,16 @@ class PivotalPageClient(private val token: String, projectId: Int) {
             "&fields=%%3Adefault%%2Ctransitions%%2Ccycle_time_details"
 
     fun page(offset: Int, date: ZonedDateTime? = null): PivotalTicketsResponse {
-        val jsonResponse = JdkRequest(pageUrl(offset = offset, createdAfter = date))
+        val jsonResponse = JdkRequest(pageUrl(offset = offset, acceptedAfter = date))
                 .header("X-TrackerToken", token)
                 .fetch()
                 .body()
         return Parser.parse<PivotalTicketsResponse>(jsonResponse)!!
     }
 
-    private fun pageUrl(offset: Int, createdAfter: ZonedDateTime? = null): String {
-        if (createdAfter != null) {
-            return apiUrl.format(offset) + "&created_after=" + createdAfter.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+    private fun pageUrl(offset: Int, acceptedAfter: ZonedDateTime? = null): String {
+        if (acceptedAfter != null) {
+            return apiUrl.format(offset) + "&accepted_after=" + acceptedAfter.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
         }
         return apiUrl.format(offset)
     }

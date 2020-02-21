@@ -6,7 +6,7 @@ import com.nhaarman.mockitokotlin2.mock
 import fr.hadrienmp.stats.domain.Ticket
 import fr.hadrienmp.stats.domain.TicketType.BUG
 import fr.hadrienmp.stats.domain.TicketType.FEATURE
-import fr.hadrienmp.stats.domain.Tickets
+import fr.hadrienmp.stats.domain.TicketSource
 import fr.hadrienmp.stats.domain.aTicket
 import io.kotlintest.specs.StringSpec
 import org.assertj.core.api.Assertions.assertThat
@@ -17,17 +17,17 @@ import java.time.LocalDate.now
 import java.time.ZonedDateTime.parse
 
 
-class TicketsCacheSpec : StringSpec({
+class TicketSourceCacheSpec : StringSpec({
     val date = parse("2018-12-31T00:00:00Z")
 
     "Delegates to a tickets source" {
 
         val expected = listOf(aTicket())
-        val tickets = mock<Tickets> {
+        val tickets = mock<TicketSource> {
             on { after(any()) } doReturn expected
         }
 
-        val ticketsCache = TicketsCache(tickets, Duration.ofMillis(100))
+        val ticketsCache = TicketSourceCache(Duration.ofMillis(100), tickets)
 
         val actual = ticketsCache.after(date)
 
@@ -35,8 +35,8 @@ class TicketsCacheSpec : StringSpec({
     }
 
     "tickets are cached by zoned date time" {
-        val tickets = mock<Tickets> {}
-        val ticketsCache = TicketsCache(tickets, Duration.ofMillis(100))
+        val tickets = mock<TicketSource> {}
+        val ticketsCache = TicketSourceCache(Duration.ofMillis(100), tickets)
         val firstDate = parse("2010-01-01T00:00:00Z")
         val secondDate = parse("2019-12-31T00:00:00Z")
 
@@ -50,11 +50,11 @@ class TicketsCacheSpec : StringSpec({
     }
 
     "call the source after expiration" {
-        val tickets = mock<Tickets> {
+        val tickets = mock<TicketSource> {
             on { after(any()) } doReturn listOf(aTicket(type = FEATURE), aTicket(type = BUG))
         }
         val duration = Duration.ofMillis(100)
-        val ticketsCache = TicketsCache(tickets, duration)
+        val ticketsCache = TicketSourceCache(duration, tickets)
 
         ticketsCache.after(date)
         Thread.sleep(duration.toMillis())
@@ -66,11 +66,11 @@ class TicketsCacheSpec : StringSpec({
 
     "tickets are refreshed after expiration" {
         val expected = listOf(Ticket(now(), FEATURE))
-        val tickets = mock<Tickets> {
+        val tickets = mock<TicketSource> {
             on { after(any()) }.doReturn(listOf(aTicket(type = FEATURE), aTicket(type = BUG)), expected)
         }
         val duration = Duration.ofMillis(100)
-        val ticketsCache = TicketsCache(tickets, duration)
+        val ticketsCache = TicketSourceCache(duration, tickets)
 
         ticketsCache.after(date)
         Thread.sleep(duration.toMillis())
