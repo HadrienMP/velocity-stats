@@ -4,7 +4,6 @@ import com.jcabi.http.Request
 import com.jcabi.http.request.JdkRequest
 import fr.hadrienmp.stats.tickets.source.pivotal.Parser
 import java.time.LocalDate
-import com.jcabi.http.Response as HttpResponse
 
 class PageClient(val credentials: Credentials, private val jiraHost: String, val project: String) {
     fun ticketsAfter(localDate: LocalDate) = Parser.parse<Response>(

@@ -9,6 +9,7 @@ data class Response(val startAt: Int,
 
 data class Ticket(val fields: Fields)
 data class Fields(val status: Status? = null,
+                  val created: String,
                   @Json(name = "resolutiondate")
                   val acceptedAt: String? = null,
                   @Json(name = "customfield_10002")
