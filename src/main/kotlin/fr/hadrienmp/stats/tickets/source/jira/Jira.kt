@@ -16,5 +16,5 @@ fun jiraTickets(credentials: Credentials, jiraHost: String, project: String, dat
                     }
                 """)
                 .back()
-                .fetch()
+                .fetch()!!
 
