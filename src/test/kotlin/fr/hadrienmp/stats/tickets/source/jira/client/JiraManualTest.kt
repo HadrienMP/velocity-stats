@@ -1,12 +1,10 @@
 package fr.hadrienmp.stats.tickets.source.jira.client
 
 import fr.hadrienmp.stats.tickets.source.jira.*
-import java.io.File
-import java.nio.charset.Charset.defaultCharset
 import java.time.LocalDate
 
 fun main(args: Array<String>) {
-    val credentials = credentials(args)
+    val credentials = Credentials.from(args)
     val project = args.first { it.matches(Regex("jira.project=.*")) }.split("=")[1]
     val jiraHost = args.first { it.matches(Regex("jira.host=.*")) }.split("=")[1]
 
