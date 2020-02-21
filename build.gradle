@@ -27,6 +27,7 @@ dependencies {
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
     compile 'org.thymeleaf:thymeleaf:3.0.9.RELEASE'
     compile 'com.jcabi:jcabi-http:1.17.1'
+    compile 'com.jcabi:jcabi-matchers:1.1'
     compile 'com.beust:klaxon:2.1.14'
     compile 'com.sun.jersey:jersey-client:1.19'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.5'
