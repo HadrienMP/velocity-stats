@@ -13,7 +13,7 @@ data class Fields(val status: Status? = null,
                   @Json(name = "resolutiondate")
                   val acceptedAt: String? = null,
                   @Json(name = "customfield_10002")
-                  val estimate: Float = 0f,
+                  val estimate: Float? = null,
                   @Json(name = "issuetype")
                   val type: IssueType)
 
