@@ -1,4 +1,4 @@
-package fr.hadrienmp.stats.tickets.source.jira
+package fr.hadrienmp.stats.tickets.source.jira.client
 
 import java.nio.charset.Charset
 import java.util.*

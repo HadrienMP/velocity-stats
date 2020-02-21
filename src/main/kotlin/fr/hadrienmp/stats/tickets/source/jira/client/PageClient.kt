@@ -1,4 +1,4 @@
-package fr.hadrienmp.stats.tickets.source.jira
+package fr.hadrienmp.stats.tickets.source.jira.client
 
 import com.jcabi.http.Request
 import com.jcabi.http.request.JdkRequest

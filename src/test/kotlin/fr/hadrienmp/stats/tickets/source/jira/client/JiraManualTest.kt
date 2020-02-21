@@ -1,6 +1,5 @@
 package fr.hadrienmp.stats.tickets.source.jira.client
 
-import fr.hadrienmp.stats.tickets.source.jira.*
 import java.time.LocalDate
 
 fun main(args: Array<String>) {
