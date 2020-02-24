@@ -10,7 +10,7 @@ data class Response(val startAt: Int,
                     val total: Int,
                     val issues: List<Ticket>)
 
-data class Ticket(val fields: Fields) {
+data class Ticket(val key: String, val fields: Fields) {
     fun toCore(): fr.hadrienmp.stats.domain.Ticket {
         return fr.hadrienmp.stats.domain.Ticket(
                 createDate = parseJiraDate(fields.created),
@@ -34,8 +34,10 @@ data class Fields(val status: Status? = null,
                   @Json(name = "customfield_10002")
                   val estimate: Float? = null,
                   @Json(name = "issuetype")
-                  val type: IssueType)
+                  val type: IssueType,
+                  val fixVersions: List<FixVersion> = emptyList())
 
+data class FixVersion(val name: String)
 data class IssueType(val name: String)
 data class Status(val statusCategory: StatusCategory)
 data class StatusCategory(val key: String)

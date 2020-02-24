@@ -7,7 +7,7 @@ fun main(args: Array<String>) {
     val project = args.first { it.matches(Regex("jira.project=.*")) }.split("=")[1]
     val jiraHost = args.first { it.matches(Regex("jira.host=.*")) }.split("=")[1]
 
-    val jiraTicketsResponse = DefaultPageClient(credentials, jiraHost, project).ticketsAfter(LocalDate.now().minusMonths(1), 0)
+    val jiraTicketsResponse = DefaultPageClient(credentials, jiraHost, project).ticketsAfter(LocalDate.parse("2020-01-01"), 0)
 
     println(jiraTicketsResponse)
 }

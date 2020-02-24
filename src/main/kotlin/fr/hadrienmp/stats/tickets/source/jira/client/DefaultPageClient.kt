@@ -19,13 +19,14 @@ fun jiraPageClientFrom(args: Array<String>): DefaultPageClient {
 
 class DefaultPageClient(val credentials: Credentials, private val jiraHost: String, val project: String) : PageClient {
     override fun ticketsAfter(localDate: LocalDate, offset: Int): Response {
-        val url = "$jiraHost/rest/api/latest/search?startAt=$offset&maxResults=50&jql=${URLEncoder.encode(jql(localDate), Charsets.UTF_8.name())}"
-        return Parser.parse<Response>(
-                JdkRequest(url)
-                        .header("authorization", "Basic ${credentials.toBase64()}")
-                        .header("content-type", "application/json")
-                        .fetch()
-                        .body())!!
+        val url = "$jiraHost/rest/api/2/search?startAt=$offset&maxResults=50&jql=${URLEncoder.encode(jql(localDate), Charsets.UTF_8.name())}"
+        val jsonResponse = JdkRequest(url)
+                .header("authorization", "Basic ${credentials.toBase64()}")
+                .header("content-type", "application/json")
+                .fetch()
+                .body()
+        println(jsonResponse)
+        return Parser.parse<Response>(jsonResponse)!!
     }
 
     private fun jql(localDate: LocalDate) = "project=$project " +
