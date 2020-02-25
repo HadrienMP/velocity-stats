@@ -31,7 +31,7 @@ fun webapp(port: Port, pivotalClient: PivotalClient, defaultPageClient: DefaultP
         }
 
         val tickets = TicketSourceCache(Duration.ofMinutes(5), Pivotal(pivotalClient), Jira(defaultPageClient))
-        val analysisStartDate = ZonedDateTime.now().minusMonths(6).withDayOfMonth(1)
+        val analysisStartDate = ZonedDateTime.now().minusMonths(12).withDayOfMonth(1)
 
 
         it.get("/stats/tickets-finished-per-month") {

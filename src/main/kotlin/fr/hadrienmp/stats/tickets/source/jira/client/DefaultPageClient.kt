@@ -25,7 +25,6 @@ class DefaultPageClient(val credentials: Credentials, private val jiraHost: Stri
                 .header("content-type", "application/json")
                 .fetch()
                 .body()
-        println(jsonResponse)
         return Parser.parse<Response>(jsonResponse)!!
     }
 
