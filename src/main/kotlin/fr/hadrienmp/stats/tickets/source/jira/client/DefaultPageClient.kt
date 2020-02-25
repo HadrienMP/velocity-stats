@@ -30,5 +30,6 @@ class DefaultPageClient(val credentials: Credentials, private val jiraHost: Stri
 
     private fun jql(localDate: LocalDate) = "project=$project " +
             "AND resolutiondate>=${localDate} " +
+            "AND fixVersion != 'Pivotal -> Jira' " +
             "ORDER BY created DESC"
 }

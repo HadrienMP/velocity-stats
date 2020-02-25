@@ -13,7 +13,6 @@ class Jira(private val pageClient: PageClient) : TicketSource {
                 .map { pageClient.ticketsAfter(analysisStartDate.toLocalDate(), it) }
                 .takeWhile { it.issues.isNotEmpty() }
                 .flatMap { it.issues.asSequence() }
-                .filterNot { it.fields.fixVersions.contains(FixVersion("Pivotal -> Jira")) }
                 .map(JiraTicket::toCore)
                 .toList()
     }
