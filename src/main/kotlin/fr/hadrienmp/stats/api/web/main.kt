@@ -1,22 +1,25 @@
 package fr.hadrienmp.stats.api.web
 
+import fr.hadrienmp.lib.web.AppArguments
 import fr.hadrienmp.lib.web.Port
 import fr.hadrienmp.lib.web.ThymeleafTemplates
 import fr.hadrienmp.lib.web.WebApp
 import fr.hadrienmp.stats.domain.*
 import fr.hadrienmp.stats.tickets.source.TicketSourceCache
 import fr.hadrienmp.stats.tickets.source.jira.Jira
-import fr.hadrienmp.stats.tickets.source.jira.client.jiraPageClientFrom
 import fr.hadrienmp.stats.tickets.source.pivotal.Pivotal
 import fr.hadrienmp.stats.tickets.source.pivotal.client.pivotalClientFrom
 import java.time.Duration
 import java.time.ZonedDateTime
 
 fun main(args: Array<String>) {
-    webapp(Port(args), Pivotal(pivotalClientFrom(args)), Jira(jiraPageClientFrom(args))).start()
+    val appArguments = AppArguments(args)
+    val jira = jiraPageClientFrom(appArguments)?.let(::Jira)
+    val pivotal = Pivotal(pivotalClientFrom(args))
+    webapp(Port(args), listOfNotNull(pivotal, jira)).start()
 }
 
-fun webapp(port: Port, vararg ticketSources: TicketSource): WebApp {
+fun webapp(port: Port, ticketSources: List<TicketSource>): WebApp {
     ThymeleafTemplates("webapp/").enable()
 
     return WebApp(port).withRoutes { javalin ->

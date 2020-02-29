@@ -1,13 +1,14 @@
 package fr.hadrienmp.stats.tickets.source.jira.client
 
+import fr.hadrienmp.lib.web.AppArguments
 import java.nio.charset.Charset
 import java.util.*
 
 class Credentials(private val userName: String, private val password: String) {
     companion object {
-        fun from(args: Array<String>): Credentials {
-            val userName = args.first { it.matches(Regex("jira.user=.*")) }.split("=")[1]
-            val password = args.first { it.matches(Regex("jira.password=.*")) }.split("=")[1]
+        fun from(args: AppArguments): Credentials? {
+            val userName = args.find("jira.user") ?: return null
+            val password = args.find("jira.password") ?: return null
             return Credentials(userName, password)
         }
     }

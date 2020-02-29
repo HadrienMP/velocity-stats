@@ -27,7 +27,7 @@ class TicketSourceCacheSpec : StringSpec({
             on { after(any()) } doReturn expected
         }
 
-        val ticketsCache = TicketSourceCache(Duration.ofMillis(100), tickets)
+        val ticketsCache = TicketSourceCache(Duration.ofMillis(100), listOf(tickets))
 
         val actual = ticketsCache.after(date)
 
@@ -36,7 +36,7 @@ class TicketSourceCacheSpec : StringSpec({
 
     "tickets are cached by zoned date time" {
         val tickets = mock<TicketSource> {}
-        val ticketsCache = TicketSourceCache(Duration.ofMillis(100), tickets)
+        val ticketsCache = TicketSourceCache(Duration.ofMillis(100), listOf(tickets))
         val firstDate = parse("2010-01-01T00:00:00Z")
         val secondDate = parse("2019-12-31T00:00:00Z")
 
@@ -54,7 +54,7 @@ class TicketSourceCacheSpec : StringSpec({
             on { after(any()) } doReturn listOf(aTicket(type = FEATURE), aTicket(type = BUG))
         }
         val duration = Duration.ofMillis(100)
-        val ticketsCache = TicketSourceCache(duration, tickets)
+        val ticketsCache = TicketSourceCache(duration, listOf(tickets))
 
         ticketsCache.after(date)
         Thread.sleep(duration.toMillis())
@@ -70,7 +70,7 @@ class TicketSourceCacheSpec : StringSpec({
             on { after(any()) }.doReturn(listOf(aTicket(type = FEATURE), aTicket(type = BUG)), expected)
         }
         val duration = Duration.ofMillis(100)
-        val ticketsCache = TicketSourceCache(duration, tickets)
+        val ticketsCache = TicketSourceCache(duration, listOf(tickets))
 
         ticketsCache.after(date)
         Thread.sleep(duration.toMillis())

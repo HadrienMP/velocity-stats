@@ -7,7 +7,7 @@ import fr.hadrienmp.stats.domain.TicketSource
 import java.time.Duration
 import java.time.ZonedDateTime
 
-class TicketSourceCache(timeToLive: Duration, private val ticketSources: Array<out TicketSource>) : TicketSource {
+class TicketSourceCache(timeToLive: Duration, private val ticketSources: List<TicketSource>) : TicketSource {
     var cache: LoadingCache<ZonedDateTime, List<Ticket>> = Caffeine.newBuilder()
             .maximumSize(10000)
             .expireAfterWrite(timeToLive)
