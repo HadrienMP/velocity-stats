@@ -9,9 +9,10 @@ interface PageClient {
     fun ticketsAfter(localDate: LocalDate, offset: Int): Response
 }
 
-class DefaultPageClient(val credentials: Credentials, private val jiraHost: String, val project: String) : PageClient {
+class DefaultPageClient(val credentials: Credentials, private val jiraHost: String, val project: String, private val jqlCustomization: String = "") : PageClient {
     override fun ticketsAfter(localDate: LocalDate, offset: Int): Response {
         val url = "$jiraHost/rest/api/2/search?startAt=$offset&maxResults=50&jql=${URLEncoder.encode(jql(localDate), Charsets.UTF_8.name())}"
+        println(url)
         val jsonResponse = JdkRequest(url)
                 .header("authorization", "Basic ${credentials.toBase64()}")
                 .header("content-type", "application/json")
@@ -20,8 +21,6 @@ class DefaultPageClient(val credentials: Credentials, private val jiraHost: Stri
         return Parser.parse<Response>(jsonResponse)!!
     }
 
-    private fun jql(localDate: LocalDate) = "project=$project " +
-            "AND resolutiondate>=${localDate} " +
-            "AND fixVersion != 'Pivotal -> Jira' " +
-            "ORDER BY created DESC"
+    private fun jql(localDate: LocalDate) = "project = $project AND resolved >= $localDate $jqlCustomization"
+
 }

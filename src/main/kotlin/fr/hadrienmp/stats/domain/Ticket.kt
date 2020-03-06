@@ -8,9 +8,9 @@ data class Ticket(
         val createDate: LocalDate,
         val type: TicketType,
         val points: Int? = null,
-        val finishDate: LocalDate? = null
+        val finishDate: LocalDate
 ) {
-    fun finishMonth() = finishDate?.withDayOfMonth(1)
-    fun finishWeek() = finishDate?.with(DayOfWeek.FRIDAY)
-    fun cycleTime() = finishDate?.until(createDate)?.negated()
+    fun finishMonth() = finishDate.withDayOfMonth(1)
+    fun finishWeek() = finishDate.with(DayOfWeek.FRIDAY)
+    fun cycleTime() = finishDate.until(createDate)?.negated()
 }

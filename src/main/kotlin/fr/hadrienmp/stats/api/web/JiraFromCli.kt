@@ -7,7 +7,8 @@ import fr.hadrienmp.stats.tickets.source.jira.client.DefaultPageClient
 fun jiraPageClientFrom(args: AppArguments): DefaultPageClient? {
     val project = args.find("jira.project") ?: return null
     val jiraHost = args.find("jira.host") ?: return null
+    val jqlCustomization = args.find("jira.jql.customization") ?: ""
     val credentials = Credentials.from(args) ?: return null
-    return DefaultPageClient(credentials, jiraHost, project)
+    return DefaultPageClient(credentials, jiraHost, project, jqlCustomization)
 }
 

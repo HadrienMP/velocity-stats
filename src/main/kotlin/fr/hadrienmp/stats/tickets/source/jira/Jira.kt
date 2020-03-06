@@ -2,7 +2,6 @@ package fr.hadrienmp.stats.tickets.source.jira
 
 import fr.hadrienmp.stats.domain.Ticket
 import fr.hadrienmp.stats.domain.TicketSource
-import fr.hadrienmp.stats.tickets.source.jira.client.FixVersion
 import fr.hadrienmp.stats.tickets.source.jira.client.PageClient
 import java.time.ZonedDateTime
 import fr.hadrienmp.stats.tickets.source.jira.client.Ticket as JiraTicket

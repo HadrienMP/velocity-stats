@@ -28,7 +28,7 @@ fun webapp(port: Port, ticketSources: List<TicketSource>): WebApp {
         }
 
         val tickets = TicketSourceCache(Duration.ofMinutes(5), ticketSources)
-        val analysisStartDate = ZonedDateTime.now().minusMonths(5).withDayOfMonth(1)
+        val analysisStartDate = ZonedDateTime.now().minusMonths(6).withDayOfMonth(1)
 
 
         javalin.get("/stats/tickets-finished-per-month") {

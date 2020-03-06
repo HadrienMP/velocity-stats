@@ -15,7 +15,7 @@ data class PivotalTicket(
         @Json(name = "story_type")
         val type: String,
         @Json(name = "accepted_at")
-        val acceptedAt: ZonedDateTime? = null,
+        val acceptedAt: ZonedDateTime,
         @Json(name = "estimate")
         private val estimate: Int? = null,
         @Json(name = "transitions")
@@ -25,7 +25,7 @@ data class PivotalTicket(
         return Ticket(
                 createDate = createdAt.toLocalDate(),
                 type = ticketType(),
-                finishDate = acceptedAt?.toLocalDate(),
+                finishDate = acceptedAt.toLocalDate(),
                 points = estimate
         )
     }

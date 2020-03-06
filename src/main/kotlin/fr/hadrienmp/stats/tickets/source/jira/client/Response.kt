@@ -20,7 +20,7 @@ data class Ticket(val key: String, val fields: Fields) {
                     "Bogue" -> TicketType.BUG
                     else -> TicketType.UNKNOWN
                 },
-                finishDate = fields.acceptedAt?.let { parseJiraDate(it) }
+                finishDate = parseJiraDate(fields.acceptedAt)
         )
     }
 
@@ -30,7 +30,7 @@ data class Ticket(val key: String, val fields: Fields) {
 data class Fields(val status: Status? = null,
                   val created: String,
                   @Json(name = "resolutiondate")
-                  val acceptedAt: String? = null,
+                  val acceptedAt: String,
                   @Json(name = "customfield_10002")
                   val estimate: Float? = null,
                   @Json(name = "issuetype")
