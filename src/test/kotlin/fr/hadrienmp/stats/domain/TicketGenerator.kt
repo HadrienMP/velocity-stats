@@ -4,13 +4,13 @@ import java.time.LocalDate
 import java.time.LocalDate.now
 
 fun aTicket(type: TicketType = TicketType.FEATURE,
-            finishedOn: LocalDate? = null,
-            createdOn: LocalDate = now()): Ticket {
+            finishDate: LocalDate? = null,
+            createDate: LocalDate = now()): Ticket {
     return Ticket(
-            createDate = createdOn,
+            createDate = createDate,
             type = type,
             points = 0,
-            finishDate = finishedOn
+            finishDate = finishDate ?: now()
     )
 }
 

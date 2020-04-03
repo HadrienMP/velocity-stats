@@ -13,9 +13,9 @@ class CountBySpec : StringSpec({
 
     "should return a map of keys the result of the given function, and values the number of elements matching the key" {
         val tickets = listOf(
-                aTicket(finishedOn = now, createdOn = now()),
-                aTicket(finishedOn = now, createdOn = now()),
-                aTicket(finishedOn = lastMonth, createdOn = now()))
+                aTicket(finishDate = now, createDate = now()),
+                aTicket(finishDate = now, createDate = now()),
+                aTicket(finishDate = lastMonth, createDate = now()))
 
         val numbers = tickets.countBy(Ticket::finishMonth)
 
@@ -25,7 +25,7 @@ class CountBySpec : StringSpec({
         ))
     }
     "should not countBy elements for which the function returns null" {
-        val tickets = listOf(aTicket(finishedOn = null, createdOn = now()))
+        val tickets = listOf(aTicket(finishDate = null, createDate = now()))
 
         val numbers = tickets.countBy(Ticket::finishMonth)
 

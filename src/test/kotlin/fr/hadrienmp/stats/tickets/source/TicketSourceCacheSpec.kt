@@ -65,7 +65,7 @@ class TicketSourceCacheSpec : StringSpec({
     }
 
     "tickets are refreshed after expiration" {
-        val expected = listOf(Ticket(now(), FEATURE))
+        val expected = listOf(aTicket())
         val tickets = mock<TicketSource> {
             on { after(any()) }.doReturn(listOf(aTicket(type = FEATURE), aTicket(type = BUG)), expected)
         }

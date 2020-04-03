@@ -6,8 +6,8 @@ import java.time.LocalDate.now
 
 class FeaturesFinishedByMonthSpec : StringSpec({
     "should countBy features by finishMonth" {
-        val first = aTicket(finishedOn = now())
-        val second = aTicket(finishedOn = now().minusMonths(1))
+        val first = aTicket(finishDate = now())
+        val second = aTicket(finishDate = now().minusMonths(1))
         val tickets = listOf(first, first, second)
 
         val count = featuresFinishedByMonth(tickets)
@@ -18,7 +18,7 @@ class FeaturesFinishedByMonthSpec : StringSpec({
         )
     }
     "should not countBy other type of tickets" {
-        val tickets = listOf(aTicket(type = TicketType.UNKNOWN, finishedOn = now()))
+        val tickets = listOf(aTicket(type = TicketType.UNKNOWN, finishDate = now()))
 
         val count = featuresFinishedByMonth(tickets)
 
