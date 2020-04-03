@@ -4,7 +4,7 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
-import fr.hadrienmp.stats.domain.Ticket
+import fr.hadrienmp.stats.domain.DoneTicket
 import fr.hadrienmp.stats.domain.TicketType
 import fr.hadrienmp.stats.domain.aTicket
 import fr.hadrienmp.stats.tickets.source.jira.client.Fields
@@ -49,18 +49,18 @@ internal class JiraSpec : StringSpec({
             )
         }
         val ticketSource = Jira(pageClient)
-        val tickets = ticketSource.after(ZonedDateTime.parse("2010-01-01T00:00:00Z"))
+        val tickets = ticketSource.doneTicketsAfter(ZonedDateTime.parse("2010-01-01T00:00:00Z"))
         assertThat(tickets).containsOnly(
-                Ticket(createDate = LocalDate.parse("2019-10-01"),
+                DoneTicket(createDate = LocalDate.parse("2019-10-01"),
                         type = TicketType.FEATURE,
                         finishDate = LocalDate.parse("2019-12-01"),
                         points = 3),
-                Ticket(createDate = LocalDate.parse("2019-10-01"),
+                DoneTicket(createDate = LocalDate.parse("2019-10-01"),
                         type = TicketType.BUG,
                         finishDate = LocalDate.parse("2019-12-01")),
                 aTicket(createDate = LocalDate.parse("2019-10-01"),
                         type = TicketType.BUG),
-                Ticket(createDate = LocalDate.parse("2019-10-01"),
+                DoneTicket(createDate = LocalDate.parse("2019-10-01"),
                         type = TicketType.UNKNOWN,
                         finishDate = LocalDate.parse("2019-12-01")))
 
@@ -80,7 +80,7 @@ internal class JiraSpec : StringSpec({
             )
         }
         val ticketSource = Jira(pageClient)
-        val tickets = ticketSource.after(ZonedDateTime.parse("2010-01-01T00:00:00Z"))
+        val tickets = ticketSource.doneTicketsAfter(ZonedDateTime.parse("2010-01-01T00:00:00Z"))
         assertThat(tickets).containsOnly(
                 aTicket(createDate = LocalDate.parse("2019-10-01"),
                         type = TicketType.FEATURE))
@@ -121,18 +121,18 @@ internal class JiraSpec : StringSpec({
             )
         }
         val ticketSource = Jira(pageClient)
-        val tickets = ticketSource.after(ZonedDateTime.parse("2010-01-01T00:00:00Z"))
+        val tickets = ticketSource.doneTicketsAfter(ZonedDateTime.parse("2010-01-01T00:00:00Z"))
         assertThat(tickets).containsOnly(
-                Ticket(createDate = LocalDate.parse("2019-10-01"),
+                DoneTicket(createDate = LocalDate.parse("2019-10-01"),
                         type = TicketType.FEATURE,
                         finishDate = LocalDate.parse("2019-12-01"),
                         points = 3),
-                Ticket(createDate = LocalDate.parse("2019-10-01"),
+                DoneTicket(createDate = LocalDate.parse("2019-10-01"),
                         type = TicketType.BUG,
                         finishDate = LocalDate.parse("2019-12-01")),
                 aTicket(createDate = LocalDate.parse("2019-10-01"),
                         type = TicketType.BUG),
-                Ticket(createDate = LocalDate.parse("2019-10-01"),
+                DoneTicket(createDate = LocalDate.parse("2019-10-01"),
                         type = TicketType.UNKNOWN,
                         finishDate = LocalDate.parse("2019-12-01")))
     }

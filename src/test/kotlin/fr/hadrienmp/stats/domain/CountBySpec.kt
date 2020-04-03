@@ -17,7 +17,7 @@ class CountBySpec : StringSpec({
                 aTicket(finishDate = now, createDate = now()),
                 aTicket(finishDate = lastMonth, createDate = now()))
 
-        val numbers = tickets.countBy(Ticket::finishMonth)
+        val numbers = tickets.countBy(DoneTicket::finishMonth)
 
         numbers should containAll(mapOf<LocalDate, Int>(
                 Pair(now.withDayOfMonth(1), 2),
@@ -27,14 +27,14 @@ class CountBySpec : StringSpec({
     "should not countBy elements for which the function returns null" {
         val tickets = listOf(aTicket(finishDate = null, createDate = now()))
 
-        val numbers = tickets.countBy(Ticket::finishMonth)
+        val numbers = tickets.countBy(DoneTicket::finishMonth)
 
         numbers.isEmpty() shouldBe true
     }
     "should return an empty map for an empty list" {
-        val tickets = listOf<Ticket>()
+        val tickets = listOf<DoneTicket>()
 
-        val numbers = tickets.countBy(Ticket::finishMonth)
+        val numbers = tickets.countBy(DoneTicket::finishMonth)
 
         numbers.isEmpty() shouldBe true
     }

@@ -11,8 +11,8 @@ data class Response(val startAt: Int,
                     val issues: List<Ticket>)
 
 data class Ticket(val key: String, val fields: Fields) {
-    fun toCore(): fr.hadrienmp.stats.domain.Ticket {
-        return fr.hadrienmp.stats.domain.Ticket(
+    fun toCore(): fr.hadrienmp.stats.domain.DoneTicket {
+        return fr.hadrienmp.stats.domain.DoneTicket(
                 createDate = parseJiraDate(fields.created),
                 points = fields.estimate?.toInt(),
                 type = when (fields.type.name) {

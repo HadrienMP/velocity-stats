@@ -37,7 +37,7 @@ fun webapp(port: Port, ticketSources: List<TicketSource>): WebApp {
         route.get("/projection") { ctx ->
             val numberOfMonthsToAnalyze = ctx.queryParam(key = "period")?.toLong() ?: 3
             ctx.cookieStore("period", numberOfMonthsToAnalyze)
-            val statsByFinishMonth = statsOf(tickets.after(analysisStartDate(ctx)), Ticket::finishMonth)
+            val statsByFinishMonth = statsOf(tickets.doneTicketsAfter(analysisStartDate(ctx)), DoneTicket::finishMonth)
             val storiesStats = SummaryStatistics()
             statsByFinishMonth["stories"]?.forEach {storiesStats.addValue(it.value.toDouble())}
 
@@ -48,17 +48,17 @@ fun webapp(port: Port, ticketSources: List<TicketSource>): WebApp {
         }
 
         route.get("/stats/tickets-finished-per-month") {
-            it.json(statsOf(tickets.after(analysisStartDate(it)), Ticket::finishMonth))
+            it.json(statsOf(tickets.doneTicketsAfter(analysisStartDate(it)), DoneTicket::finishMonth))
         }
         route.get("/stats/tickets-finished-per-week") {
-            it.json(statsOf(tickets.after(analysisStartDate(it)), Ticket::finishWeek))
+            it.json(statsOf(tickets.doneTicketsAfter(analysisStartDate(it)), DoneTicket::finishWeek))
         }
         route.get("/stats/cycle-times") {
-            it.json(tickets.after(analysisStartDate(it)).timesInDaysByPoint(Ticket::cycleTime))
+            it.json(tickets.doneTicketsAfter(analysisStartDate(it)).timesInDaysByPoint(DoneTicket::cycleTime))
         }
         route.get("/stats/points-repartition") { context ->
-            context.json(tickets.after(analysisStartDate(context))
-                    .countBy(Ticket::points)
+            context.json(tickets.doneTicketsAfter(analysisStartDate(context))
+                    .countBy(DoneTicket::points)
                     .mapKeys { "${it.key} points" })
         }
     }

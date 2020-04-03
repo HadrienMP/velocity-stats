@@ -4,7 +4,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Period
 
-data class Ticket(
+data class DoneTicket(
         val createDate: LocalDate,
         val type: TicketType,
         val points: Int? = null,

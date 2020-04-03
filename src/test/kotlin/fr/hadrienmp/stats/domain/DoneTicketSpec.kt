@@ -6,7 +6,7 @@ import java.time.LocalDate.now
 import java.time.LocalDate.of
 import java.time.Period
 
-class TicketSpec: StringSpec({
+class DoneTicketSpec: StringSpec({
     "the finished month of a ticket should return the first day of the month" {
         val finishedDate = of(2018,2,3)
         val ticket = aTicket(finishDate = finishedDate)

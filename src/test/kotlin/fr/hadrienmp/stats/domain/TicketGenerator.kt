@@ -5,8 +5,8 @@ import java.time.LocalDate.now
 
 fun aTicket(type: TicketType = TicketType.FEATURE,
             finishDate: LocalDate? = null,
-            createDate: LocalDate = now()): Ticket {
-    return Ticket(
+            createDate: LocalDate = now()): DoneTicket {
+    return DoneTicket(
             createDate = createDate,
             type = type,
             points = 0,

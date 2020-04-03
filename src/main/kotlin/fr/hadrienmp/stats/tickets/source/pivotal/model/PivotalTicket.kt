@@ -1,10 +1,9 @@
 package fr.hadrienmp.stats.tickets.source.pivotal.model
 
 import com.beust.klaxon.Json
-import fr.hadrienmp.stats.domain.Ticket
+import fr.hadrienmp.stats.domain.DoneTicket
 import fr.hadrienmp.stats.domain.TicketType
 import fr.hadrienmp.stats.domain.TicketType.*
-import java.time.LocalDate
 import java.time.ZonedDateTime
 
 data class PivotalTicket(
@@ -21,8 +20,8 @@ data class PivotalTicket(
         @Json(name = "transitions")
         val transitionsInReverseOrder: List<Transition> = emptyList()
 ) {
-    fun toTicket(): Ticket {
-        return Ticket(
+    fun toTicket(): DoneTicket {
+        return DoneTicket(
                 createDate = createdAt.toLocalDate(),
                 type = ticketType(),
                 finishDate = acceptedAt.toLocalDate(),
