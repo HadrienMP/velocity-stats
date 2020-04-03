@@ -12,6 +12,7 @@ import fr.hadrienmp.stats.tickets.source.pivotal.client.pivotalClientFrom
 import io.javalin.http.Context
 import java.time.Duration
 import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 
 fun main(args: Array<String>) {
     val appArguments = AppArguments(args)
@@ -24,11 +25,14 @@ fun webapp(port: Port, ticketSources: List<TicketSource>): WebApp {
     ThymeleafTemplates("webapp/").enable()
 
     return WebApp(port, "/webapp").withRoutes { javalin ->
+        val tickets = TicketSourceCache(Duration.ofMinutes(5), ticketSources)
+
         javalin.get("/") {
+            val numberOfMonthsToAnalyze = it.queryParam(key = "period")?.toLong() ?: 3
+            it.cookieStore("period", numberOfMonthsToAnalyze)
             it.render("plots.html")
         }
 
-        val tickets = TicketSourceCache(Duration.ofMinutes(5), ticketSources)
 
         javalin.get("/stats/tickets-finished-per-month") {
             it.json(statsOf(tickets.after(analysisStartDate(it)), Ticket::finishMonth))
@@ -51,7 +55,8 @@ private fun analysisStartDate(it: Context): ZonedDateTime {
     return ZonedDateTime.now()
             .minusMonths(numberOfMonthsToAnalyze(it))
             .withDayOfMonth(1)
+            .truncatedTo(ChronoUnit.DAYS)
 }
 
-private fun numberOfMonthsToAnalyze(it: Context) = it.queryParam(key = "period")?.toLong() ?: 3
+private fun numberOfMonthsToAnalyze(it: Context) = it.cookieStore<Long>("period")
 
