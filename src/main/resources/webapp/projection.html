@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Velocity Stats</title>
+    <meta charset="UTF-8">
+    <link href="main.css" type="text/css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/36321d34e2.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+    <h1>Velocity stats</h1>
+    <form method="get" id="analysis-form">
+        <label for="period">Analysis period</label>
+        <select id="period" name="period">
+            <option value="1" th:selected="${period == 1}">Last month</option>
+            <option value="3" th:selected="${period == 3}">Last three months</option>
+            <option value="6" th:selected="${period == 6}">Last six months</option>
+            <option value="12" th:selected="${period == 12}">Last year</option>
+        </select>
+        <button type="submit">Refresh</button>
+    </form>
+</header>
+<section>
+    <p>Stories per month: <span th:text="${meanStories}">2</span></p>
+    <p>Points per month: <span th:text="${meanPoints}">3</span></p>
+</section>
+<script type="application/javascript">
+    document.getElementById("period").onchange = function() {
+        document.getElementById("analysis-form").submit();
+    }
+</script>
+</body>
+</html>
+

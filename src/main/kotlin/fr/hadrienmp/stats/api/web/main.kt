@@ -10,7 +10,7 @@ import fr.hadrienmp.stats.tickets.source.jira.Jira
 import fr.hadrienmp.stats.tickets.source.pivotal.Pivotal
 import fr.hadrienmp.stats.tickets.source.pivotal.client.pivotalClientFrom
 import io.javalin.http.Context
-import io.javalin.plugin.rendering.template.TemplateUtil.model
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics
 import java.time.Duration
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
@@ -25,26 +25,41 @@ fun main(args: Array<String>) {
 fun webapp(port: Port, ticketSources: List<TicketSource>): WebApp {
     ThymeleafTemplates("webapp/").enable()
 
-    return WebApp(port, "/webapp").withRoutes { javalin ->
+    return WebApp(port, "/webapp").withRoutes { route ->
         val tickets = TicketSourceCache(Duration.ofMinutes(5), ticketSources)
 
-        javalin.get("/") {
+        route.get("/") {
             val numberOfMonthsToAnalyze = it.queryParam(key = "period")?.toLong() ?: 3
             it.cookieStore("period", numberOfMonthsToAnalyze)
-            it.render("plots.html", model("period", numberOfMonthsToAnalyze))
+            it.render("plots.html", mapOf(Pair("period", numberOfMonthsToAnalyze)))
         }
 
+        route.get("/projection") { ctx ->
+            val numberOfMonthsToAnalyze = ctx.queryParam(key = "period")?.toLong() ?: 3
+            ctx.cookieStore("period", numberOfMonthsToAnalyze)
+            val statsByFinishMonth = statsOf(tickets.after(analysisStartDate(ctx)), Ticket::finishMonth)
+            val storiesStats = SummaryStatistics()
+            statsByFinishMonth["stories"]?.forEach {storiesStats.addValue(it.value.toDouble())}
+            val pointsStats = SummaryStatistics()
+            statsByFinishMonth["points"]?.forEach {pointsStats.addValue(it.value.toDouble())}
 
-        javalin.get("/stats/tickets-finished-per-month") {
+            ctx.render("projection.html", mapOf(
+                    Pair("period", numberOfMonthsToAnalyze),
+                    Pair("meanStories", storiesStats.mean),
+                    Pair("meanPoints", pointsStats.mean)
+            ))
+        }
+
+        route.get("/stats/tickets-finished-per-month") {
             it.json(statsOf(tickets.after(analysisStartDate(it)), Ticket::finishMonth))
         }
-        javalin.get("/stats/tickets-finished-per-week") {
+        route.get("/stats/tickets-finished-per-week") {
             it.json(statsOf(tickets.after(analysisStartDate(it)), Ticket::finishWeek))
         }
-        javalin.get("/stats/cycle-times") {
+        route.get("/stats/cycle-times") {
             it.json(tickets.after(analysisStartDate(it)).timesInDaysByPoint(Ticket::cycleTime))
         }
-        javalin.get("/stats/points-repartition") { context ->
+        route.get("/stats/points-repartition") { context ->
             context.json(tickets.after(analysisStartDate(context))
                     .countBy(Ticket::points)
                     .mapKeys { "${it.key} points" })
@@ -54,10 +69,8 @@ fun webapp(port: Port, ticketSources: List<TicketSource>): WebApp {
 
 private fun analysisStartDate(it: Context): ZonedDateTime {
     return ZonedDateTime.now()
-            .minusMonths(numberOfMonthsToAnalyze(it))
+            .minusMonths(it.cookieStore("period"))
             .withDayOfMonth(1)
             .truncatedTo(ChronoUnit.DAYS)
 }
-
-private fun numberOfMonthsToAnalyze(it: Context) = it.cookieStore<Long>("period")
 
