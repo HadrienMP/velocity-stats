@@ -10,6 +10,7 @@ import fr.hadrienmp.stats.tickets.source.jira.Jira
 import fr.hadrienmp.stats.tickets.source.pivotal.Pivotal
 import fr.hadrienmp.stats.tickets.source.pivotal.client.pivotalClientFrom
 import io.javalin.http.Context
+import io.javalin.plugin.rendering.template.TemplateUtil.model
 import java.time.Duration
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
@@ -30,7 +31,7 @@ fun webapp(port: Port, ticketSources: List<TicketSource>): WebApp {
         javalin.get("/") {
             val numberOfMonthsToAnalyze = it.queryParam(key = "period")?.toLong() ?: 3
             it.cookieStore("period", numberOfMonthsToAnalyze)
-            it.render("plots.html")
+            it.render("plots.html", model("period", numberOfMonthsToAnalyze))
         }
 
 
