@@ -4,4 +4,5 @@ import java.time.ZonedDateTime
 
 interface TicketSource {
     fun doneTicketsAfter(analysisStartDate: ZonedDateTime): List<DoneTicket>
+    fun future(): List<FutureTicket>
 }

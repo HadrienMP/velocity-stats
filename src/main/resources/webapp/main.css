@@ -1,7 +1,7 @@
 body {
     font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
     margin: 0;
-    padding-top: 100px;
+    padding: 100px 40px 10px;
 }
 
 header {
@@ -15,30 +15,44 @@ header {
     left: 0;
     right: 0;
     z-index: 10;
+    overflow: hidden;
 }
-
-header h1 {
+header> * {
+    border-left: 1px solid #27ac78a3;
     display: inline-block;
+}
+header a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    vertical-align: middle;
+    padding: 20px 20px;
+}
+header a:hover {
+    background: #228e63;
+}
+header h1 {
     vertical-align: sub;
-    border-right: 1px solid #27ac78a3;
     padding: 10px 20px;
+    border-left: none;
 }
 header form {
     display: inline-block;
-    margin-left: 20px;
-    vertical-align: text-bottom;
+    padding: 24px 20px;
+    vertical-align: middle;
 }
 header form * {
     vertical-align: middle;
+    margin-right: 5px;
 }
 
 h1, h2, hr {
-    z-index: 100;
-    position: relative;
     margin: 0;
 }
 
-#plots {
+#container {
+    max-width: 800px;
+    margin: auto;
 }
 
 .plot {
@@ -55,4 +69,25 @@ h1, h2, hr {
 .plot .fa-circle-notch {
     font-size: 4em;
     margin-top: 100px;
+}
+
+#tickets {
+    padding: 0;
+}
+#tickets li {
+    padding: 10px 10px;
+    list-style-type: none;
+    border: 1px solid #ccc;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: all-scroll;
+}
+.moving {
+    background: #1e6941;
+    color: white;
+    cursor: grabbing;
+}
+strong {
+    color: #1e6941;
 }

@@ -8,8 +8,9 @@
 </head>
 <body>
 <header>
-    <h1>Velocity stats</h1>
-    <form method="get" id="analysis-form">
+    <h1><i class="fi-xwluxl-analytics-wide"></i> Velocity stats</h1><!--
+ --><a href="/projection">Projections</a><!--
+ --><form method="get" id="analysis-form">
         <label for="period">Analysis period</label>
         <select id="period" name="period">
             <option value="1" th:selected="${period == 1}">Last month</option>
@@ -35,6 +36,7 @@
         <div id="pointsRepartition"><i class="fas fa-circle-notch fa-spin"></i></div>
     </div>
 </section>
+<script defer src="https://friconix.com/cdn/friconix.js"> </script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>

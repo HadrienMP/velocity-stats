@@ -14,6 +14,7 @@ import org.apache.commons.math3.stat.descriptive.SummaryStatistics
 import java.time.Duration
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
+import kotlin.math.roundToInt
 
 fun main(args: Array<String>) {
     val appArguments = AppArguments(args)
@@ -38,13 +39,13 @@ fun webapp(port: Port, ticketSources: List<TicketSource>): WebApp {
             val numberOfMonthsToAnalyze = ctx.queryParam(key = "period")?.toLong() ?: 3
             ctx.cookieStore("period", numberOfMonthsToAnalyze)
             val statsByFinishMonth = statsOf(tickets.doneTicketsAfter(analysisStartDate(ctx)), DoneTicket::finishMonth)
-            val storiesStats = SummaryStatistics()
-            statsByFinishMonth["stories"]?.forEach {storiesStats.addValue(it.value.toDouble())}
+            val storiesByMonth = SummaryStatistics()
+            statsByFinishMonth["stories"]?.forEach { storiesByMonth.addValue(it.value.toDouble()) }
 
             ctx.render("projection.html", mapOf(
                     Pair("period", numberOfMonthsToAnalyze),
-                    Pair("meanStories", storiesStats.mean)
-            ))
+                    Pair("meanStories", storiesByMonth.mean.roundToInt()),
+                    Pair("tickets", tickets.future())))
         }
 
         route.get("/stats/tickets-finished-per-month") {

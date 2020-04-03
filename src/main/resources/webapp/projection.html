@@ -8,8 +8,9 @@
 </head>
 <body>
 <header>
-    <h1>Velocity stats</h1>
-    <form method="get" id="analysis-form">
+    <h1><i class="fi-xwluxl-analytics-wide"></i> Velocity stats</h1><!--
+ --><a href="/">Stats</a><!--
+ --><form method="get" id="analysis-form">
         <label for="period">Analysis period</label>
         <select id="period" name="period">
             <option value="1" th:selected="${period == 1}">Last month</option>
@@ -20,13 +21,29 @@
         <button type="submit">Refresh</button>
     </form>
 </header>
-<section>
-    <p>Stories per month: <span th:text="${meanStories}">2</span></p>
+<section id="container">
+    <h2><strong>Stories per month: </strong><span th:text="${meanStories}">2</span></h2>
+    <ul id="tickets">
+        <li th:each="ticket, status: ${tickets}"
+            th:title="${ticket.id} + ' - ' + ${ticket.title}">
+            <i class="fi-xnsuxl-three-bars-solid"></i> <span th:text="${ticket.id} + ' - ' + ${ticket.title}"></span>
+        </li>
+    </ul>
 </section>
+<script defer src="https://friconix.com/cdn/friconix.js"> </script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script src="sortable.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js"></script>
 <script type="application/javascript">
     document.getElementById("period").onchange = function() {
         document.getElementById("analysis-form").submit();
-    }
+    };
+    Sortable.create(document.getElementById("tickets"), {
+        animation: 150,
+        ghostClass: 'moving'
+    });
 </script>
 </body>
 </html>
