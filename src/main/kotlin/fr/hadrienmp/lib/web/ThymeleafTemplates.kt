@@ -1,6 +1,6 @@
 package fr.hadrienmp.lib.web
 
-import io.javalin.translator.template.JavalinThymeleafPlugin
+import io.javalin.plugin.rendering.template.JavalinThymeleaf
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
@@ -22,6 +22,6 @@ class ThymeleafTemplates(baseDirectory: String = "") {
     }
 
     fun enable() {
-        JavalinThymeleafPlugin.configure(templateEngine)
+        JavalinThymeleaf.configure(templateEngine)
     }
 }

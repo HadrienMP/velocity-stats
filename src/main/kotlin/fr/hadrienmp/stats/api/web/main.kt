@@ -9,6 +9,7 @@ import fr.hadrienmp.stats.tickets.source.TicketSourceCache
 import fr.hadrienmp.stats.tickets.source.jira.Jira
 import fr.hadrienmp.stats.tickets.source.pivotal.Pivotal
 import fr.hadrienmp.stats.tickets.source.pivotal.client.pivotalClientFrom
+import io.javalin.http.Context
 import java.time.Duration
 import java.time.ZonedDateTime
 
@@ -22,29 +23,35 @@ fun main(args: Array<String>) {
 fun webapp(port: Port, ticketSources: List<TicketSource>): WebApp {
     ThymeleafTemplates("webapp/").enable()
 
-    return WebApp(port).withRoutes { javalin ->
+    return WebApp(port, "/webapp").withRoutes { javalin ->
         javalin.get("/") {
-            it.renderThymeleaf("plots.html")
+            it.render("plots.html")
         }
 
         val tickets = TicketSourceCache(Duration.ofMinutes(5), ticketSources)
-        val analysisStartDate = ZonedDateTime.now().minusMonths(6).withDayOfMonth(1)
-
 
         javalin.get("/stats/tickets-finished-per-month") {
-            it.json(statsOf(tickets.after(analysisStartDate), Ticket::finishMonth))
+            it.json(statsOf(tickets.after(analysisStartDate(it)), Ticket::finishMonth))
         }
         javalin.get("/stats/tickets-finished-per-week") {
-            it.json(statsOf(tickets.after(analysisStartDate), Ticket::finishWeek))
+            it.json(statsOf(tickets.after(analysisStartDate(it)), Ticket::finishWeek))
         }
         javalin.get("/stats/cycle-times") {
-            it.json(tickets.after(analysisStartDate).timesInDaysByPoint(Ticket::cycleTime))
+            it.json(tickets.after(analysisStartDate(it)).timesInDaysByPoint(Ticket::cycleTime))
         }
         javalin.get("/stats/points-repartition") { context ->
-            context.json(tickets.after(analysisStartDate)
+            context.json(tickets.after(analysisStartDate(context))
                     .countBy(Ticket::points)
                     .mapKeys { "${it.key} points" })
         }
-    }.withStaticFolder("/webapp")
+    }
 }
+
+private fun analysisStartDate(it: Context): ZonedDateTime {
+    return ZonedDateTime.now()
+            .minusMonths(numberOfMonthsToAnalyze(it))
+            .withDayOfMonth(1)
+}
+
+private fun numberOfMonthsToAnalyze(it: Context) = it.queryParam(key = "period")?.toLong() ?: 3
 

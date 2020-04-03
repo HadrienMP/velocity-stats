@@ -11,7 +11,7 @@ class TicketSourceCache(timeToLive: Duration, private val ticketSources: List<Ti
     var cache: LoadingCache<ZonedDateTime, List<Ticket>> = Caffeine.newBuilder()
             .maximumSize(10000)
             .expireAfterWrite(timeToLive)
-            .build<ZonedDateTime, List<Ticket>> { key: ZonedDateTime -> ticketSources.flatMap { it.after(key) } }
+            .build { key: ZonedDateTime -> ticketSources.flatMap { it.after(key) } }
 
     override fun after(analysisStartDate: ZonedDateTime) = cache.get(analysisStartDate)
             ?: ticketSources.flatMap { it.after(analysisStartDate) }
