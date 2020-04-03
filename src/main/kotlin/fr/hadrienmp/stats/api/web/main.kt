@@ -40,13 +40,10 @@ fun webapp(port: Port, ticketSources: List<TicketSource>): WebApp {
             val statsByFinishMonth = statsOf(tickets.after(analysisStartDate(ctx)), Ticket::finishMonth)
             val storiesStats = SummaryStatistics()
             statsByFinishMonth["stories"]?.forEach {storiesStats.addValue(it.value.toDouble())}
-            val pointsStats = SummaryStatistics()
-            statsByFinishMonth["points"]?.forEach {pointsStats.addValue(it.value.toDouble())}
 
             ctx.render("projection.html", mapOf(
                     Pair("period", numberOfMonthsToAnalyze),
-                    Pair("meanStories", storiesStats.mean),
-                    Pair("meanPoints", pointsStats.mean)
+                    Pair("meanStories", storiesStats.mean)
             ))
         }
 
