@@ -53,6 +53,7 @@ h1, h2, hr {
 #container {
     max-width: 800px;
     margin: auto;
+    position: relative;
 }
 
 .plot {
@@ -82,7 +83,14 @@ h1, h2, hr {
     overflow: hidden;
     white-space: nowrap;
     cursor: all-scroll;
+    box-sizing: border-box;
+    height: 40px;
 }
+#tickets li i {
+    position: relative;
+    top: -2px;
+}
+
 .moving {
     background: #1e6941;
     color: white;
@@ -90,4 +98,25 @@ h1, h2, hr {
 }
 strong {
     color: #1e6941;
+}
+
+.table-label {
+    padding: 10px;
+    margin: 0;
+    position: absolute;
+    background: #1e6941;
+    top: 44px;
+    left: -36px;
+    width: 36px;
+    box-sizing: border-box;
+    color: white;
+}
+.table-label span {
+    transform: rotate(90deg) translateX(-1em);
+    display: inline-block;
+    width: 10em;
+    transform-origin: bottom left;
+}
+#next-month {
+    background: #1e8a62;
 }
