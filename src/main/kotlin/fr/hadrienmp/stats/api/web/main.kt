@@ -13,6 +13,7 @@ import io.javalin.http.Context
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics
 import java.time.Duration
 import java.time.ZonedDateTime
+import java.time.ZonedDateTime.now
 import java.time.temporal.ChronoUnit
 import kotlin.math.roundToInt
 
@@ -38,9 +39,15 @@ fun webapp(port: Port, ticketSources: List<TicketSource>): WebApp {
         route.get("/projection") { ctx ->
             val numberOfMonthsToAnalyze = ctx.queryParam(key = "period")?.toLong() ?: 3
             ctx.cookieStore("period", numberOfMonthsToAnalyze)
-            val statsByFinishMonth = statsOf(tickets.doneTicketsAfter(analysisStartDate(ctx)), DoneTicket::finishMonth)
+            val doneTickets = tickets
+                    .doneTicketsAfter(now().minusMonths(numberOfMonthsToAnalyze))
+                    .filter { it.type == TicketType.FEATURE }
+                    .groupBy { ticket ->
+                        ticket.finishDate.withDayOfMonth(now().dayOfMonth)
+                    }.mapValues { it.value.size }
+            println(doneTickets)
             val storiesByMonth = SummaryStatistics()
-            statsByFinishMonth["stories"]?.forEach { storiesByMonth.addValue(it.value.toDouble()) }
+            doneTickets.forEach { storiesByMonth.addValue(it.value.toDouble()) }
 
             ctx.render("projection.html", mapOf(
                     Pair("period", numberOfMonthsToAnalyze),
@@ -66,7 +73,7 @@ fun webapp(port: Port, ticketSources: List<TicketSource>): WebApp {
 }
 
 private fun analysisStartDate(it: Context): ZonedDateTime {
-    return ZonedDateTime.now()
+    return now()
             .minusMonths(it.cookieStore("period"))
             .withDayOfMonth(1)
             .truncatedTo(ChronoUnit.DAYS)
