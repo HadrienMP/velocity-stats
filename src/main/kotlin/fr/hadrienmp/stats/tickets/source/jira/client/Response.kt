@@ -13,26 +13,21 @@ data class Response(val startAt: Int,
                     val issues: List<Ticket>)
 
 data class Ticket(val key: String, val fields: Fields) {
-    fun toCore(): DoneTicket {
-        val doneTicket = DoneTicket(
-                createDate = parseJiraDate(fields.created),
-                points = fields.estimate?.toInt(),
-                type = when (fields.type.name) {
-                    "Récit" -> when (fields.estimate) {
-                        null -> TicketType.CHORE
-                        0f -> TicketType.CHORE
-                        else -> TicketType.FEATURE
-                    }
-                    "Bogue" -> TicketType.BUG
-                    "Chore" -> TicketType.CHORE
-                    else -> TicketType.UNKNOWN
-                },
-                finishDate = parseJiraDate(fields.acceptedAt!!)
-        )
-        if (doneTicket.type == TicketType.CHORE)
-            println(listOf(this.key, this.fields.created, this.fields.acceptedAt))
-        return doneTicket
-    }
+    fun toCore() = DoneTicket(
+            createDate = parseJiraDate(fields.created),
+            points = fields.estimate?.toInt(),
+            type = when (fields.type.name) {
+                "Récit" -> when (fields.estimate) {
+                    null -> TicketType.CHORE
+                    0f -> TicketType.CHORE
+                    else -> TicketType.FEATURE
+                }
+                "Bogue" -> TicketType.BUG
+                "Chore" -> TicketType.CHORE
+                else -> TicketType.UNKNOWN
+            },
+            finishDate = parseJiraDate(fields.acceptedAt!!)
+    )
 
     private fun parseJiraDate(it: String) =
             LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ"))
