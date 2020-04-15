@@ -30,21 +30,25 @@ internal class JiraSpec : StringSpec({
                                     created = "2019-10-01T16:52:42.000+0200",
                                     estimate = 3.0f,
                                     type = IssueType("Récit"),
-                                    acceptedAt = "2019-12-01T16:52:42.000+0200")),
+                                    acceptedAt = "2019-12-01T16:52:42.000+0200",
+                                    title = "Title")),
                             JiraTicket(key = "second", fields = Fields(
                                     created = "2019-10-01T16:52:42.000+0200",
                                     type = IssueType("Bogue"),
-                                    acceptedAt = "2019-12-01T16:52:42.000+0200")),
+                                    acceptedAt = "2019-12-01T16:52:42.000+0200",
+                                    title = "Title")),
                             JiraTicket(key = "third",
                                     fields = Fields(
                                             created = "2019-10-01T16:52:42.000+0200",
                                             type = IssueType("Bogue"),
-                                            acceptedAt = "2019-10-01T16:52:42.000+0200")
+                                            acceptedAt = "2019-10-01T16:52:42.000+0200",
+                                            title = "Title")
                             ),
                             JiraTicket(key = "third", fields = Fields(
                                     created = "2019-10-01T16:52:42.000+0200",
                                     type = IssueType("Autre"),
-                                    acceptedAt = "2019-12-01T16:52:42.000+0200"))
+                                    acceptedAt = "2019-12-01T16:52:42.000+0200",
+                                    title = "Title"))
                     )
             )
         }
@@ -76,7 +80,8 @@ internal class JiraSpec : StringSpec({
                             JiraTicket(key = "first", fields = Fields(
                                     created = "2019-10-01T00:00:00.000+0200",
                                     type = IssueType("Récit"),
-                                    acceptedAt = "2019-10-01T16:52:42.000+0200")))
+                                    acceptedAt = "2019-10-01T16:52:42.000+0200",
+                                    title = "Title")))
             )
         }
         val ticketSource = Jira(pageClient)
@@ -98,11 +103,13 @@ internal class JiraSpec : StringSpec({
                                     created = "2019-10-01T16:52:42.000+0200",
                                     estimate = 3.0f,
                                     type = IssueType("Récit"),
-                                    acceptedAt = "2019-12-01T16:52:42.000+0200")),
+                                    acceptedAt = "2019-12-01T16:52:42.000+0200",
+                                    title = "Title")),
                             JiraTicket(key = "second", fields = Fields(
                                     created = "2019-10-01T16:52:42.000+0200",
                                     type = IssueType("Bogue"),
-                                    acceptedAt = "2019-12-01T16:52:42.000+0200")))
+                                    acceptedAt = "2019-12-01T16:52:42.000+0200",
+                                    title = "Title")))
             )
             on { ticketsAfter(ZonedDateTime.parse("2010-01-01T00:00:00Z").toLocalDate(), 50) } doReturn Response(
                     startAt = 50,
@@ -112,11 +119,13 @@ internal class JiraSpec : StringSpec({
                             JiraTicket(key = "third", fields = Fields(
                                     created = "2019-10-01T16:52:42.000+0200",
                                     type = IssueType("Bogue"),
-                                    acceptedAt = "2019-10-01T16:52:42.000+0200")),
+                                    acceptedAt = "2019-10-01T16:52:42.000+0200",
+                                    title = "Title")),
                             JiraTicket(key = "fourth", fields = Fields(
                                     created = "2019-10-01T16:52:42.000+0200",
                                     type = IssueType("Autre"),
-                                    acceptedAt = "2019-12-01T16:52:42.000+0200"))
+                                    acceptedAt = "2019-12-01T16:52:42.000+0200",
+                                    title = "Title"))
                     )
             )
         }
