@@ -32,6 +32,7 @@ data class PivotalTicket(
     private fun ticketType(): TicketType = when(type) {
         "feature" -> FEATURE
         "bug" -> BUG
+        "chore" -> CHORE
         else -> UNKNOWN
     }
 

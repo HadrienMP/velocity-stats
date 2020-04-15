@@ -19,8 +19,10 @@ class TicketSourceCache(timeToLive: Duration, private val ticketSources: List<Ti
             .expireAfterWrite(timeToLive)
             .build { ticketSources.flatMap { it.future() } }
 
-    override fun doneTicketsAfter(analysisStartDate: ZonedDateTime) = doneTicketsCache.get(analysisStartDate)
-            ?: ticketSources.flatMap { it.doneTicketsAfter(analysisStartDate) }
+    override fun doneTicketsAfter(analysisStartDate: ZonedDateTime): List<DoneTicket> {
+        return doneTicketsCache.get(analysisStartDate)
+                ?: ticketSources.flatMap { it.doneTicketsAfter(analysisStartDate) }
+    }
 
     override fun future(): List<FutureTicket> {
         return futureTicketsCache.get("all") ?: ticketSources.flatMap { it.future() }

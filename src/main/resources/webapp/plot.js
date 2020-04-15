@@ -84,9 +84,9 @@ function toPlotData(stats) {
     };
 
     var others = {
-        x: Object.keys(stats["unknowns"]),
-        y: Object.values(stats["unknowns"]),
-        name: 'Other',
+        x: Object.keys(stats["chores"]),
+        y: Object.values(stats["chores"]),
+        name: 'Chores',
         type: 'bar',
         marker: {
             color: '#8ebad9',
@@ -118,9 +118,10 @@ function toPlotData(stats) {
 
 function toBoxPlotData(stats) {
     return [
-        boxplot(Object.values(stats["stories"]), 'Stories'),
+        boxplot(Object.values(stats["stories"]), 'Stories', '#2ca02c'),
         boxplot(Object.values(stats["points"]), 'Points'),
-        boxplot(Object.values(stats["bugs"]), 'Bugs'),
+        boxplot(Object.values(stats["chores"]), 'Chores', '#1f77b4'),
+        boxplot(Object.values(stats["bugs"]), 'Bugs', '#d62728'),
         boxplot(Object.values(stats["tickets"]), 'Tickets')
     ];
 }
@@ -142,12 +143,17 @@ function plot(dict, name) {
     };
 }
 
-function boxplot(values, name) {
-    return {
+function boxplot(values, name, color) {
+    let plot = {
         y: values,
         type: 'box',
         boxmean: 'sd',
         name: name,
-        boxpoints: 'suspectedoutliers'
+        boxpoints: 'suspectedoutliers',
     };
+    if (color)
+        plot["marker"] = {
+            color: color,
+        };
+    return plot;
 }

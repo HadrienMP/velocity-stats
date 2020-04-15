@@ -7,7 +7,7 @@ fun statsOf(tickets: List<DoneTicket>, property: (DoneTicket) -> LocalDate?): Ma
     return mapOf(
             Pair("stories", tickets.countBy(property) { it.type == TicketType.FEATURE }),
             Pair("bugs", tickets.countBy(property) { it.type == TicketType.BUG }),
-            Pair("unknowns", tickets.countBy(property) { it.type == TicketType.UNKNOWN }),
+            Pair("chores", tickets.countBy(property) { it.type == TicketType.CHORE }),
             Pair("points", tickets.countPointsBy(property)),
             Pair("tickets", tickets.countBy(property))
     )
