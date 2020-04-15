@@ -60,6 +60,23 @@ $.get("/stats/points-repartition", function (stats) {
     $("#pointsRepartition .fa-circle-notch").remove();
 });
 
+$.get("/stats/types-repartition", function (stats) {
+    var data = [{
+        values: Object.values(stats),
+        labels: Object.keys(stats),
+        type: 'pie'
+    }];
+
+    var layout = {
+        height: 400,
+        width: 500,
+        title: "Repartition of types"
+    };
+
+    Plotly.newPlot('typesRepartition', data, layout);
+    $("#typesRepartition .fa-circle-notch").remove();
+});
+
 //
 
 // ########################################

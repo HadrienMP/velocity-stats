@@ -69,6 +69,10 @@ fun webapp(port: Port, ticketSources: List<TicketSource>): WebApp {
                     .countBy(DoneTicket::points)
                     .mapKeys { "${it.key} points" })
         }
+        route.get("/stats/types-repartition") { context ->
+            val ticketsByTypes = tickets.doneTicketsAfter(analysisStartDate(context)).countBy(DoneTicket::type)
+            context.json(ticketsByTypes)
+        }
     }
 }
 
