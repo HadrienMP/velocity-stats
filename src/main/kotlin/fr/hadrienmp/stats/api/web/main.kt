@@ -21,7 +21,9 @@ fun main(args: Array<String>) {
     val appArguments = AppArguments(args)
     val jira = jiraPageClientFrom(appArguments)?.let(::Jira)
     val pivotal = Pivotal(pivotalClientFrom(args))
-    webapp(Port(args), listOfNotNull(pivotal, jira)).start()
+    val ticketSources = listOfNotNull(pivotal, jira)
+    println(ticketSources)
+    webapp(Port(args), ticketSources).start()
 }
 
 fun webapp(port: Port, ticketSources: List<TicketSource>): WebApp {
