@@ -11,18 +11,21 @@ import fr.hadrienmp.stats.tickets.source.pivotal.Pivotal
 import fr.hadrienmp.stats.tickets.source.pivotal.client.pivotalClientFrom
 import io.javalin.http.Context
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics
+import org.slf4j.LoggerFactory
 import java.time.Duration
 import java.time.ZonedDateTime
 import java.time.ZonedDateTime.now
 import java.time.temporal.ChronoUnit
 import kotlin.math.roundToInt
 
+val log = LoggerFactory.getLogger("Main");
+
 fun main(args: Array<String>) {
     val appArguments = AppArguments(args)
     val jira = jiraPageClientFrom(appArguments)?.let(::Jira)
     val pivotal = Pivotal(pivotalClientFrom(args))
     val ticketSources = listOfNotNull(pivotal, jira)
-    println(ticketSources)
+    log.info("" + ticketSources)
     webapp(Port(args), ticketSources).start()
 }
 
@@ -47,7 +50,7 @@ fun webapp(port: Port, ticketSources: List<TicketSource>): WebApp {
                     .groupBy { ticket ->
                         ticket.finishDate.withDayOfMonth(now().dayOfMonth)
                     }.mapValues { it.value.size }
-            println(doneTickets)
+            log.debug("" + doneTickets)
             val storiesByMonth = SummaryStatistics()
             doneTickets.forEach { storiesByMonth.addValue(it.value.toDouble()) }
 
