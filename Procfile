@@ -1,1 +1,1 @@
-web: ./build/install/velocity-stats/bin/velocity-stats port=$PORT pivotalProjectId=$pivotalProjectId pivotalToken=$pivotalToken jira.user=$jiraUser jira.password=$jiraPassword jira.host=$jiraHost jira.project=$jiraProject jira.jql.customization=$jiraJql
+web: ./build/install/velocity-stats/bin/velocity-stats port=$PORT pivotalProjectId=$pivotalProjectId pivotalToken=$pivotalToken jira.user=$jiraUser jira.password=$jiraPassword jira.host=$jiraHost jira.project=$jiraProject jira.jql.customization="$jiraJql"
