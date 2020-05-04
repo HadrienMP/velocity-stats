@@ -12,9 +12,6 @@ interface PageClient {
 }
 
 class DefaultPageClient(val credentials: Credentials, private val jiraHost: String, val project: String, private val jqlCustomization: String = "") : PageClient {
-    init {
-        log.info(jqlCustomization)
-    }
     companion object {
         val log = LoggerFactory.getLogger(DefaultPageClient::class.java)
     }
@@ -26,7 +23,6 @@ class DefaultPageClient(val credentials: Credentials, private val jiraHost: Stri
                 .header("content-type", "application/json")
                 .fetch()
                 .body()
-        log.info(jsonResponse);
         return Parser.parse<Response>(jsonResponse)!!
     }
 
