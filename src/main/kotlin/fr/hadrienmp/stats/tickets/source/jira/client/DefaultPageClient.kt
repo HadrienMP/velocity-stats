@@ -17,6 +17,7 @@ class DefaultPageClient(val credentials: Credentials, private val jiraHost: Stri
     }
     override fun ticketsAfter(localDate: LocalDate, offset: Int): Response {
         val url = "$jiraHost/rest/api/2/search?startAt=$offset&maxResults=50&jql=${URLEncoder.encode(jql(localDate), Charsets.UTF_8.name())}"
+        log.info(url);
         val jsonResponse = JdkRequest(url)
                 .header("authorization", "Basic ${credentials.toBase64()}")
                 .header("content-type", "application/json")
