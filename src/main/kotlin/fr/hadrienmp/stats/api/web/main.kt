@@ -21,8 +21,8 @@ import kotlin.math.roundToInt
 val log = LoggerFactory.getLogger("Main");
 
 fun main(args: Array<String>) {
-    log.info("" + args)
     val appArguments = AppArguments(args)
+    log.info(appArguments.print())
     val jira = jiraPageClientFrom(appArguments)?.let(::Jira)
     val pivotal = Pivotal(pivotalClientFrom(args))
     val ticketSources = listOfNotNull(pivotal, jira)
