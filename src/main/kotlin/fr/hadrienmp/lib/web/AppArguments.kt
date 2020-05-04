@@ -5,5 +5,5 @@ class AppArguments(val args: Array<String>) {
             args.firstOrNull() { it.matches(Regex("$argument=.*")) }
                     ?.split("$argument=")
                     ?.get(1)
-    fun print() = args.joinToString(" ")
+    fun print() = args.joinToString(",")
 }
